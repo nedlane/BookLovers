@@ -1,14 +1,36 @@
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, Button } from 'react-native';
+import { Text, View, TextInput } from '../../components/Themed';
+import { Formik } from 'formik';
 
-import EditScreenInfo from '../../components/EditScreenInfo';
-import { Text, View } from '../../components/Themed';
 
-export default function TabOneScreen() {
+export default function Login() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <Formik
+        initialValues={{ username: '', password: '' }}
+        onSubmit={(values, actions) => {
+          if (values.username === "" || values.password === "") return;
+          alert(JSON.stringify(values));
+          actions.resetForm();
+
+        }}
+      >
+        {props => (
+          <>
+            <View>
+              <Text>Username:</Text>
+              <TextInput style={styles.input} placeholder="e.g. s3119091" autoCorrect={false} onChangeText={props.handleChange('username')} value={props.values.username} />
+            </View>
+            <View>
+              <Text>Password:</Text>
+              <TextInput style={styles.input} placeholder="********" autoCorrect={false} secureTextEntry={true} onChangeText={props.handleChange('password')} value={props.values.password} />
+            </View>
+            <Button color='maroon' title="Submit" onPress={props.handleSubmit as any} />
+
+          </>
+        )}
+      </Formik>
     </View>
   );
 }
@@ -27,5 +49,11 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#777',
+    padding: 8,
+    margin: 10,
   },
 });
