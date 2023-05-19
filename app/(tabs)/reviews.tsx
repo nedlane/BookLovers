@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, TouchableOpacity, Modal } from 'react-native';
+import { FlatList, TouchableOpacity, Modal, ScrollView, StyleSheet } from 'react-native';
 import { View, Text } from '../../components/Themed';
 import { ReviewForm } from '../../components/ReviewForm';
 import { Card } from '../../components/Card';
@@ -31,34 +31,43 @@ export default function reviewPage() {
 
     return (
         <View style={globalStyles.container}>
-            <FlatList data={reviews} renderItem={({ item, index }) => (
+            <ScrollView style={styles.flex_1}>
+                <FlatList data={reviews} renderItem={({ item, index }) => (
 
 
 
-                <TouchableOpacity onPress={() => {
-                    const newModalStates: Array<boolean> = [...modalStates];
-                    newModalStates[index] = !newModalStates[index];
-                    setModalStates(newModalStates);
-                }}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalStates[index]}
-                        onRequestClose={() => {
-                            const newModalStates = [...modalStates];
-                            newModalStates[index] = !newModalStates[index];
-                            setModalStates(newModalStates);
-                        }}
-                    >
-                        <ReviewDetails review={item} />
-                    </Modal>
-                    <Card>
-                        <Text style={globalStyles.title}>{item.title}</Text>
-                    </Card>
-                </TouchableOpacity>
-            )
-            } />
-            < ReviewForm addReview={addReview} />
+                    <TouchableOpacity onPress={() => {
+                        const newModalStates: Array<boolean> = [...modalStates];
+                        newModalStates[index] = !newModalStates[index];
+                        setModalStates(newModalStates);
+                    }}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalStates[index]}
+                            onRequestClose={() => {
+                                const newModalStates = [...modalStates];
+                                newModalStates[index] = !newModalStates[index];
+                                setModalStates(newModalStates);
+                            }}
+                        >
+                            <ReviewDetails review={item} />
+                        </Modal>
+                        <Card>
+                            <Text style={globalStyles.title}>{item.title}</Text>
+                        </Card>
+                    </TouchableOpacity>
+                )
+                } />
+            </ScrollView>
+
+            < ReviewForm addReview={addReview} style={styles.flex_1} />
         </View >
     );
 }
+
+const styles = StyleSheet.create({
+    flex_1: {
+        flex: 1,
+    },
+});

@@ -4,11 +4,11 @@ import { Text, View, TextInput } from './Themed';
 import { globalStyles } from '../constants/styles';
 import { Formik } from 'formik';
 
-export function ReviewForm({ addReview }: { addReview: Function }) {
+export function ReviewForm({ addReview, style }: { addReview: Function, style: any }) {
 
     return (
 
-        <View style={globalStyles.container}>
+        <View style={[globalStyles.container, style]}>
             <Formik
                 initialValues={{ title: '', body: '', rating: '', bid: '' }}
                 onSubmit={(values, actions) => {
