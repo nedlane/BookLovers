@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, Button } from 'react-native';
 import { Text, View, TextInput } from '../../components/Themed';
+import { globalStyles } from '../../constants/styles';
 import { Formik } from 'formik';
 
 
 export default function Login() {
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       <Formik
         initialValues={{ username: '', password: '' }}
         onSubmit={(values, actions) => {
@@ -20,11 +21,11 @@ export default function Login() {
           <>
             <View>
               <Text>Username:</Text>
-              <TextInput style={styles.input} placeholder="e.g. s3119091" autoCorrect={false} onChangeText={props.handleChange('username')} value={props.values.username} />
+              <TextInput style={globalStyles.input} placeholder="e.g. s3119091" autoCorrect={false} onChangeText={props.handleChange('username')} value={props.values.username} />
             </View>
             <View>
               <Text>Password:</Text>
-              <TextInput style={styles.input} placeholder="********" autoCorrect={false} secureTextEntry={true} onChangeText={props.handleChange('password')} value={props.values.password} />
+              <TextInput style={globalStyles.input} placeholder="********" autoCorrect={false} secureTextEntry={true} onChangeText={props.handleChange('password')} value={props.values.password} />
             </View>
             <Button color='maroon' title="Submit" onPress={props.handleSubmit as any} />
 
@@ -35,25 +36,4 @@ export default function Login() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#777',
-    padding: 8,
-    margin: 10,
-  },
-});
+

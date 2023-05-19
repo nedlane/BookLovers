@@ -25,7 +25,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Login',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="user-circle" color={color} />,
 
         }}
       />
@@ -33,8 +33,14 @@ export default function TabLayout() {
         name="myclubs"
         options={{
           title: 'My Clubs',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-
+          tabBarIcon: ({ color }) => <TabBarIcon name="wpexplorer" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="reviews"
+        options={{
+          title: 'Reviews',
+          tabBarIcon: ({ color }) => <TabBarIcon name="comments-o" color={color} />,
         }}
       />
     </Tabs>

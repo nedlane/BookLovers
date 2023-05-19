@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, View } from './Themed';
+import { Card } from './Card';
 
 type ClubType = {
     key: number,
@@ -16,15 +17,13 @@ export function Club({ club }: { club: ClubType }) {
     }
 
     return (
-        <>
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <Card>
             <TouchableOpacity onPress={handleClick}>
                 <Text>Club Name: {club.name}</Text>
                 <Text>Club Desc: {club.description}</Text>
                 <Text>Location: {club.location}</Text>
             </TouchableOpacity>
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        </>
+        </Card>
     );
 };
 

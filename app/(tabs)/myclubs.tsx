@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { Text, View } from '../../components/Themed';
+import { FlatList } from 'react-native';
+import { View } from '../../components/Themed';
 import { Club } from '../../components/Club';
+import { globalStyles } from '../../constants/styles';
 
 var clubs = [
     { "key": 1, "name": "Club 1", "description": "This is a club", "location": "This is a location #1", },
@@ -11,8 +12,7 @@ var clubs = [
 
 export default function myclubs() {
     return (
-        <View style={styles.container}>
-
+        <View style={globalStyles.container}>
             <FlatList
                 data={clubs}
                 style={{ flex: 1 }}
@@ -24,19 +24,3 @@ export default function myclubs() {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: '80%',
-    },
-});
