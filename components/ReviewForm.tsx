@@ -1,14 +1,14 @@
 import React from 'react';
-import { StyleSheet, Button } from 'react-native';
-import { Text, View, TextInput } from './Themed';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput } from './Themed';
 import { globalStyles } from '../constants/styles';
 import { Formik } from 'formik';
 
-export function ReviewForm({ addReview, style }: { addReview: Function, style: any }) {
+export function ReviewForm({ addReview }: { addReview: Function }) {
 
     return (
 
-        <View style={[globalStyles.container, style]}>
+        <>
             <Formik
                 initialValues={{ title: '', body: '', rating: '', bid: '' }}
                 onSubmit={(values, actions) => {
@@ -35,7 +35,7 @@ export function ReviewForm({ addReview, style }: { addReview: Function, style: a
                         <TextInput
                             style={globalStyles.input}
                             multiline
-                            placeholder='Review details'
+                            placeholder='Review body'
                             onChangeText={props.handleChange('body')}
                             value={props.values.body}
                         />
@@ -48,11 +48,24 @@ export function ReviewForm({ addReview, style }: { addReview: Function, style: a
                             keyboardType='numeric'
                         />
 
-                        <Button color='maroon' title="Submit" onPress={props.handleSubmit} />
+                        <TouchableOpacity onPressOut={() => { props.handleSubmit(); }}>
+                            <Text style={styles.button}>Add Review</Text>
+                        </TouchableOpacity>
                     </View>
                 )}
             </Formik>
-        </View>
+        </>
 
     );
 }
+
+const styles = StyleSheet.create({
+    button: {
+        margin: 10,
+        padding: 10,
+        fontSize: 18,
+        borderRadius: 6,
+        backgroundColor: 'maroon',
+        color: 'white',
+    },
+});

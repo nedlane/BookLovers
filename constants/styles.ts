@@ -24,5 +24,27 @@ export const globalStyles = StyleSheet.create({
         fontSize: 18,
         borderRadius: 6,
     },
+    flex_1: {
+        flex: 1,
+        width: '100%',
+    },
+    fill: {
+        flex: 1,
+        margin: 0,
+        padding: 0,
+    },
+    debug: {
+        borderWidth: 10,
+        borderColor: 'black',
+        backgroundColor: 'red',
+    },
+    modal: {
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,.5)',
+        width: '100%',
+        height: '100%',
+    },
 });
 

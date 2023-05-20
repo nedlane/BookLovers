@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, TouchableOpacity, Modal, ScrollView, StyleSheet } from 'react-native';
+import { FlatList, TouchableOpacity, Modal, StyleSheet, Pressable, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import { View, Text } from '../../components/Themed';
 import { ReviewForm } from '../../components/ReviewForm';
 import { Card } from '../../components/Card';
@@ -15,8 +15,13 @@ export default function reviewPage() {
     ]);
 
     const addReview = (review: { bid: string, title: string, rating: string, body: string, key: string }) => {
-        console.log(parseInt(review.rating));
-        if (review.bid === "" || review.title === "" || review.rating === "" || review.body === "" || isNaN(parseInt(review.rating)) || parseInt(review.rating) > 5 || parseInt(review.rating) < 0) return;
+        if (review.bid === "") { alert("Please Enter a Book ID"); return; }
+        if (review.title === "") { alert("Please Enter a Review Title"); return; }
+        if (review.body === "") { alert("Please Enter a Review"); return; }
+        if (review.rating === "") { alert("Please Enter a Rating"); return; }
+        if (isNaN(parseInt(review.bid))) { alert("Book ID must be a number"); return; }
+        if (isNaN(parseInt(review.rating))) { alert("Rating must be a number"); return; }
+        if (parseInt(review.rating) > 5 || parseInt(review.rating) < 0) { alert("Rating must be between 0 and 5"); return; }
         review.key = uuid();
         review.rating = parseInt(review.rating).toString();
         setReviews((currentReviews) => {
@@ -29,45 +34,46 @@ export default function reviewPage() {
 
     reviews.map((review) => modalStates.push(false));
 
+    function toggleModal(index: number) {
+        const newModalStates = [...modalStates];
+        newModalStates[index] = !newModalStates[index];
+        setModalStates(newModalStates);
+    }
+
     return (
-        <View style={globalStyles.container}>
-            <ScrollView style={styles.flex_1}>
-                <FlatList data={reviews} renderItem={({ item, index }) => (
-
-
-
-                    <TouchableOpacity onPress={() => {
-                        const newModalStates: Array<boolean> = [...modalStates];
-                        newModalStates[index] = !newModalStates[index];
-                        setModalStates(newModalStates);
-                    }}>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={modalStates[index]}
-                            onRequestClose={() => {
-                                const newModalStates = [...modalStates];
-                                newModalStates[index] = !newModalStates[index];
-                                setModalStates(newModalStates);
-                            }}
-                        >
-                            <ReviewDetails review={item} />
-                        </Modal>
-                        <Card>
-                            <Text style={globalStyles.title}>{item.title}</Text>
-                        </Card>
-                    </TouchableOpacity>
-                )
-                } />
-            </ScrollView>
-
-            < ReviewForm addReview={addReview} style={styles.flex_1} />
-        </View >
+        <Pressable style={globalStyles.fill} onPressOut={() => {
+            Keyboard.dismiss();
+        }}>
+            <View style={globalStyles.fill}>
+                <KeyboardAvoidingView style={globalStyles.container}>
+                    <FlatList style={globalStyles.flex_1} data={reviews} renderItem={({ item, index }) => (
+                        <TouchableOpacity onPress={() => {
+                            toggleModal(index);
+                        }}>
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={modalStates[index]}
+                                onRequestClose={() => {
+                                    toggleModal(index);
+                                }}
+                            >
+                                <View style={{ flex: 1 }}>
+                                    <ReviewDetails review={item} toggleModal={toggleModal} index={index} />
+                                </View>
+                            </Modal>
+                            <Card>
+                                <Text style={globalStyles.title}>{item.title}</Text>
+                            </Card>
+                        </TouchableOpacity>
+                    )} />
+                    <Pressable style={globalStyles.flex_1} onPressOut={(e) => { e.stopPropagation(); }}>
+                        <ReviewForm addReview={addReview} />
+                    </Pressable>
+                </KeyboardAvoidingView>
+            </View>
+        </Pressable>
     );
+
 }
 
-const styles = StyleSheet.create({
-    flex_1: {
-        flex: 1,
-    },
-});
