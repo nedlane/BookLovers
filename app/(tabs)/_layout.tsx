@@ -1,4 +1,4 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons/';
 import { Link, Tabs } from 'expo-router';
 import { Pressable, useColorScheme } from 'react-native';
 import Colors from '../../constants/Colors';
@@ -41,6 +41,13 @@ export default function TabLayout() {
         options={{
           title: 'Reviews',
           tabBarIcon: ({ color }) => <TabBarIcon name="comments-o" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="events"
+        options={{
+          title: 'My Events',
+          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="event" style={{ marginBottom: -3, minWidth: 28 }} color={color} />
         }}
       />
     </Tabs>
