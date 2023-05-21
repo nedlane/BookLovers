@@ -34,32 +34,40 @@ export default function reviewPage() {
 
     reviews.map((review) => modalStates.push(false));
 
-    function toggleModal(index: number) {
+    function openModal(index: number) {
         const newModalStates = [...modalStates];
-        newModalStates[index] = !newModalStates[index];
+        newModalStates[index] = true;
         setModalStates(newModalStates);
     }
 
+    function closeModal(index: number) {
+        const newModalStates = [...modalStates];
+        newModalStates[index] = false;
+        setModalStates(newModalStates);
+    }
+
+
+
     return (
-        <Pressable style={globalStyles.fill} onPressOut={() => {
+        <Pressable style={globalStyles.flex_1} onPressOut={() => {
             Keyboard.dismiss();
         }}>
-            <View style={globalStyles.fill}>
+            <View style={globalStyles.flex_1} >
                 <KeyboardAvoidingView style={globalStyles.container}>
                     <FlatList style={globalStyles.flex_1} data={reviews} renderItem={({ item, index }) => (
                         <TouchableOpacity onPress={() => {
-                            toggleModal(index);
+                            openModal(index);
                         }}>
                             <Modal
                                 animationType="slide"
                                 transparent={true}
                                 visible={modalStates[index]}
                                 onRequestClose={() => {
-                                    toggleModal(index);
+                                    closeModal(index);
                                 }}
                             >
                                 <View style={{ flex: 1 }}>
-                                    <ReviewDetails review={item} toggleModal={toggleModal} index={index} />
+                                    <ReviewDetails review={item} closeModal={() => { closeModal(index); }} index={index} />
                                 </View>
                             </Modal>
                             <Card>
