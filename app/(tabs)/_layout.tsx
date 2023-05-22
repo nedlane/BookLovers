@@ -6,11 +6,10 @@ import Colors from '../../constants/Colors';
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3, minWidth: 28 }} {...props} />;
+
+const TabBarIconProps = {
+  size: 28,
+  style: { marginBottom: -3, minWidth: 28 }
 }
 
 export default function TabLayout() {
@@ -25,7 +24,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Login',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user-circle" color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome {...TabBarIconProps} name="user-circle" color={color} />,
 
         }}
       />
@@ -33,23 +32,31 @@ export default function TabLayout() {
         name="myclubs"
         options={{
           title: 'My Clubs',
-          tabBarIcon: ({ color }) => <TabBarIcon name="wpexplorer" color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome {...TabBarIconProps} name="wpexplorer" color={color} />,
         }}
       />
       <Tabs.Screen
         name="reviews"
         options={{
           title: 'Reviews',
-          tabBarIcon: ({ color }) => <TabBarIcon name="comments-o" color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome {...TabBarIconProps} name="comments-o" color={color} />,
         }}
       />
       <Tabs.Screen
         name="events"
         options={{
           title: 'My Events',
-          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="event" style={{ marginBottom: -3, minWidth: 28 }} color={color} />
+          tabBarIcon: ({ color }) => <MaterialIcons {...TabBarIconProps} name="event" color={color} />
+        }}
+      />
+      <Tabs.Screen
+        name="book"
+        options={{
+          title: 'Get Books',
+          tabBarIcon: ({ color }) => <FontAwesome {...TabBarIconProps} name="book" color={color} />
         }}
       />
     </Tabs>
+
   );
 }

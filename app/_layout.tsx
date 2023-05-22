@@ -5,6 +5,11 @@ import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 
+
+global.SERVERPATH = 'http://localhost/ia3/';
+
+
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,

@@ -46,18 +46,43 @@ export default function Events() {
 
 
     const fetchEventsFromDataSource = async ({ month, year }: { month: number, year: number }) => {
-        const dummyEvents = [
-            { name: 'Event 1', date: `${year}-${month.toString().padStart(2, '0')}-10`, location: 'Location 1' },
-            { name: 'Event 2', date: `${year}-${month.toString().padStart(2, '0')}-12`, location: 'Location 2' },
-            { name: 'Event 3', date: `${year}-${month.toString().padStart(2, '0')}-15`, location: 'Location 3' },
-        ];
 
-        return dummyEvents;
+        var submit = { month: month, year: year };
+
+        var newevents = await fetch(global.SERVERPATH + '/mobile/listevents.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: Object.keys(submit)
+                .map(key => encodeURIComponent(key) + '=' + encodeURIComponent((submit as any)[key]))
+                .join('&'),
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data from the PHP server
+                return data;
+            })
+            .catch(error => {
+                // Handle any errors that occurred during the request
+                console.error(error);
+            });
+
+        newevents = newevents.events
+
+        var events = newevents.map((event: any) => {
+            var meetingdatetime = event.meetingtime.split(" ");
+            var meetingdate = meetingdatetime[0];
+            var meetingtime = meetingdatetime[1];
+            return { date: meetingdate, time: meetingtime, location: event.meetinglocation }
+        })
+
+        return events;
+
+
     };
 
-    const formatEvents = ({ events, month, year }: { events: { name: string; date: string; location: string; }[], month: number, year: number }) => {
+    const formatEvents = ({ events, month, year }: { events: { time: string; date: string; location: string; }[], month: number, year: number }) => {
         const formattedEvents: {
-            [date: string]: { name: string; date: string; location: string }[];
+            [date: string]: { time: string; date: string; location: string }[];
         } = {};
 
         const daysInMonth = new Date(year, month, 0).getDate(); // Get the number of days in the month
@@ -100,7 +125,7 @@ export default function Events() {
 
 
             }}
-            renderItem={(item, firstItemInDay) => <Event event={item} />}
+            renderItem={(item) => <Event event={item} />}
             renderEmptyDate={() => <View />}
         />
     );

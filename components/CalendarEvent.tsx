@@ -6,7 +6,7 @@ import { Card } from './Card';
 export function Event(props: any) {
     return (
         <Card style={props.style}>
-            <Text>{props.event.location}</Text>
+            <Text>{props.event.time.substring(0, props.event.time.length - 3)} - {props.event.location}</Text>
         </Card>
 
     );

@@ -7,7 +7,7 @@ import { ReviewDetails } from '../../components/ReviewDetails';
 import { globalStyles } from '../../constants/styles';
 import { v4 as uuid } from 'uuid';
 
-export default function reviewPage() {
+export default function ReviewPage() {
     const [reviews, setReviews] = useState([
         { bid: "1", title: 'Harry Potter #1', rating: "5", body: 'lorem ipsum', key: '1' },
         { bid: "2", title: 'Harry Potter #2', rating: "4", body: 'lorem ipsum', key: '2' },
