@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TextInput, View, Text } from '../../components/Themed';
 import { globalStyles } from '../../constants/styles';
-import { FlatList, Image } from 'react-native';
+import { FlatList } from 'react-native';
 import { Card } from '../../components/Card';
 import { v4 } from 'uuid';
 import { BookImage } from '../../components/BookImage';
@@ -59,6 +59,9 @@ export default function FindBook() {
                 }
 
                 var data = await response.json();
+
+                console.log(page * 25);
+                console.log(data.totalItems);
                 if (data.totalItems === 0) {
                     const book = {
                         uuid: "2",
@@ -69,6 +72,7 @@ export default function FindBook() {
                 }
                 if (data.totalItems < ((page - 1) * 25)) {
                     setBooks((prevBooks) => [...prevBooks]);
+                    return;
                 }
 
                 data = data.items;
@@ -77,9 +81,13 @@ export default function FindBook() {
 
                 if (currentPage === 1) {
                     setBooks(data);
+                    return;
                 } else {
                     setBooks((prevBooks) => [...prevBooks, ...data]);
+                    return;
                 }
+
+                throw new Error("How the hell did the code get to here");
 
             } catch (error) {
                 console.error(error);
@@ -111,14 +119,9 @@ export default function FindBook() {
             );
         } else {
             bookCover = (
-                <View
-                    style={{
-                        backgroundColor: "lightgray",
-                        aspectRatio: 1 / 1.5,
-                        height: undefined,
-                        margin: "1%",
-                        ...globalStyles.flex_1,
-                    }}
+                <BookImage
+                    lowResSrc={{ uri: "https://books.google.com/books/publisher/content/images/frontcover/1?fife=w800-h1200&source=gbs_api" }}
+                    highResSrc={{ uri: "" }}
                 />
             );
         }

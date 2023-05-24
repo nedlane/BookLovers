@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View } from '../../components/Themed';
 import { Event } from '../../components/CalendarEvent';
 import { Agenda } from 'react-native-calendars';
-import { globalStyles } from '../../constants/styles';
 import { useRouter } from "expo-router";
 import { getUser, userType } from './index';
 
