@@ -10,7 +10,8 @@ import { sha256 } from 'react-native-sha256';
 
 export async function getUser() {
   const user = await AsyncStorage.getItem('BookLovers.user');
-  return JSON.parse(user || '{}');
+  global.USER = JSON.parse(user || '{}');
+  return global.USER;
 }
 
 export type userType = {
@@ -59,6 +60,7 @@ export default function Login() {
     if (newuser.result === "Success") {
 
       await AsyncStorage.setItem('BookLovers.user', JSON.stringify(newuser));
+      global.USER = newuser;
 
       actions.resetForm();
       user = getUser();
