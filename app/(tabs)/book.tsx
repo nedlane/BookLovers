@@ -19,9 +19,7 @@ export default function FindBook() {
         clearTimeout(searchTimeoutRef.current);
 
         if (search.trim() !== '') {
-            searchTimeoutRef.current = setTimeout(() => {
-                fetchBooks(page);
-            }, 200); // Set the desired rate limit in milliseconds 
+            fetchBooks(page);
         } else {
             setBooks([]);
         }
@@ -41,49 +39,57 @@ export default function FindBook() {
         const submit = { book: search, page: currentPage };
         if (currentPage === 1) {
             const book = {
-                volumeInfo: { title: "Loading...", authors: ["Loading..."], publisher: "Loading...", publishedDate: "Loading...", description: "Loading...", pageCount: "Loading...", categories: ["Loading..."], averageRating: "Loading...", ratingsCount: "Loading..." }
+                uuid: "1",
+                volumeInfo: { title: "Loading..." }
             }
             setBooks([book]);
         }
-        try {
-            const response = await fetch(global.SERVERPATH + '/mobile/findbook.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: Object.keys(submit)
-                    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent((submit as any)[key]))
-                    .join('&'),
-            });
+        searchTimeoutRef.current = setTimeout(async () => {
+            try {
+                const response = await fetch(global.SERVERPATH + '/mobile/findbook.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: Object.keys(submit)
+                        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent((submit as any)[key]))
+                        .join('&'),
+                });
 
-            if (!response.ok) {
-                throw new Error('Request failed with status ' + response.status);
+                if (!response.ok) {
+                    throw new Error('Request failed with status ' + response.status);
+                }
+
+                var data = await response.json();
+                if (data.totalItems === 0) {
+                    const book = {
+                        uuid: "2",
+                        volumeInfo: { title: "No Results" }
+                    }
+                    setBooks([book]);
+                    return;
+                }
+                if (data.totalItems < ((page - 1) * 25)) {
+                    setBooks((prevBooks) => [...prevBooks]);
+                }
+
+                data = data.items;
+
+                data = data.map((book: any) => ({ uuid: v4(), ...book }));
+
+                if (currentPage === 1) {
+                    setBooks(data);
+                } else {
+                    setBooks((prevBooks) => [...prevBooks, ...data]);
+                }
+
+            } catch (error) {
+                console.error(error);
+                const book = {
+                    uuid: "3",
+                    volumeInfo: { title: "Error" }
+                }
+                setBooks([book]);
             }
-
-            var data = await response.json();
-            if (data.totalItems === 0) {
-                setBooks([]);
-                return;
-            }
-            if (data.totalItems < ((page - 1) * 25)) {
-                setBooks((prevBooks) => [...prevBooks]);
-            }
-
-            data = data.items;
-
-            data = data.map((book: any) => ({ uuid: v4(), ...book }));
-
-            if (currentPage === 1) {
-                setBooks(data);
-            } else {
-                setBooks((prevBooks) => [...prevBooks, ...data]);
-            }
-
-        } catch (error) {
-            console.error(error);
-            const book = {
-                volumeInfo: { title: "Error", authors: ["Error"], publisher: "Error", publishedDate: "Error", description: "Error", pageCount: "Error", categories: ["Error"], averageRating: "Error", ratingsCount: "Error" }
-            }
-            setBooks([book]);
-        }
+        }, 500);
     };
 
     const fetchMoreBooks = async () => {
@@ -120,7 +126,7 @@ export default function FindBook() {
         return (
             <Card innerStyle={{ flexDirection: "row" }}>
                 <View style={[{ flexDirection: "column" }, globalStyles.flex_1]}>
-                    <Text>{item.volumeInfo.title}</Text>
+                    <Text style={{ fontWeight: "bold" }}>{item.volumeInfo.title}</Text>
                     <Text style={{ fontStyle: "italic" }}>{item.volumeInfo.subtitle}</Text>
                     <Text style={{ fontWeight: "bold" }}>{item.volumeInfo.authors}</Text>
                 </View>
@@ -143,7 +149,7 @@ export default function FindBook() {
                     style={{ flex: 1 }}
                     renderItem={renderBook}
                     keyExtractor={(item: any) => (item.uuid)}
-                    onEndReachedThreshold={0.5}
+                    onEndReachedThreshold={2}
                     onEndReached={fetchMoreBooks}
                 />
             </View>

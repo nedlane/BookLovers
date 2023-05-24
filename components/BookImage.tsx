@@ -12,7 +12,6 @@ export const BookImage: React.FC<BookImageProps> = ({
     lowResSrc,
 }) => {
     const [isLoaded, setIsLoaded] = useState(false);
-    console.log(highResSrc);
 
     //set is loaded to true after 1 second
     const handleImageOnLoad = () => setIsLoaded(true);
