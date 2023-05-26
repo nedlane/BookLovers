@@ -18,9 +18,9 @@ export default function Login() {
 
     const [loading, isLoading] = useState(false);
     const auth = useAuth();
-    const signUp = async (submit: { email: string, password: string }) => {
+    const signUp = async (submit) => {
         isLoading(true);
-        await auth.signIn(submit.email, submit.password);
+        await auth.signUp(submit);
     };
 
     const handleMediaQueryChange = (matches: boolean) => {
@@ -37,9 +37,9 @@ export default function Login() {
         handleMediaQueryChange
     );
 
-    async function handleSubmit(values: { username: string, password: string }, actions: FormikHelpers<{ username: string, password: string }>) {
-        const submit: { email: string, password: string } = { email: values.username.toLowerCase(), password: values.password };
-
+    async function handleSubmit(values, actions) {
+        const submit: { email: string, password: string, fname: string, sname: string, pcode: string } = { email: values.username.toLowerCase(), password: values.password, fname: values.fname, sname: values.sname, pcode: values.pcode };
+        console.log(submit)
         await signUp(submit);
 
         actions.resetForm();
@@ -53,9 +53,9 @@ export default function Login() {
     return (
         <View style={[globalStyles.container]}>
             <Formik
-                initialValues={{ username: '', password: '', passwordconf: '' }}
+                initialValues={{ username: '', password: '', passwordconf: '', fname: '', sname: '', pcode: '' }}
                 onSubmit={(values, actions) => {
-                    if (values.username === "" || values.password === "" || (values.password !== values.passwordconf)) return;
+                    if (values.username === "" || values.password === "" || (values.password !== values.passwordconf) || values.fname === "" || values.sname === "") return;
                     handleSubmit(values, actions)
                 }}
             >
@@ -64,6 +64,18 @@ export default function Login() {
                         <View style={styles.flexLR}>
                             <Text>Email:</Text>
                             <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="e.g. s3119091" autoCorrect={false} onChangeText={props.handleChange('username')} value={props.values.username} />
+                        </View>
+                        <View style={styles.flexLR}>
+                            <Text>First Name:</Text>
+                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="Brad" onChangeText={props.handleChange('fname')} value={props.values.fname} />
+                        </View>
+                        <View style={styles.flexLR}>
+                            <Text>Surname:</Text>
+                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="Nielsen" onChangeText={props.handleChange('sname')} value={props.values.sname} />
+                        </View>
+                        <View style={styles.flexLR}>
+                            <Text>Post Code:</Text>
+                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="4000" onChangeText={props.handleChange('pcode')} value={props.values.pcode} keyboardType='numeric' />
                         </View>
                         <View style={styles.flexLR}>
                             <Text>Password:</Text>

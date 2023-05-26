@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, Button } from 'react-native';
 import { Text, View, TextInput } from '../../components/Themed';
 import { globalStyles } from '../../constants/styles';
-import { Formik, FormikHelpers } from 'formik';
 import '@expo/match-media';
 import { useMediaQuery } from 'react-responsive';
 import { useAuth } from '../../contexts/authContext';
 import { useRouter } from 'expo-router';
+import { BookModal } from '../../components/AddBookModal';
 
 export default function Login() {
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function Login() {
 
   return (
     <View style={[globalStyles.container]}>
-      <Text style={globalStyles.titleText}>Welcome {authData?.firstname}</Text>
+      <Text style={globalStyles.title}>Welcome {authData?.firstname}</Text>
 
       <View style={styles.flexLR}>
         <Button color='maroon' title="Log Out" onPress={logOut as any} />

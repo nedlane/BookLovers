@@ -59,6 +59,12 @@ const AuthProvider: React.FC = ({ children }) => {
         AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
     };
 
+    const signUp = async (submit: { email: string, password: string, fname: string, sname: string, pcode: string }) => {
+        await authService.signUp(submit);
+
+        signIn(submit.email, submit.password);
+    };
+
     const signOut = async () => {
         //Remove data from context, so the App can be notified
         //and send the user to the AuthStack
@@ -71,7 +77,7 @@ const AuthProvider: React.FC = ({ children }) => {
     return (
         //This component will be used to encapsulate the whole App,
         //so all components will have access to the Context
-        <AuthContext.Provider value={{ authData, loading, signIn, signOut }}>
+        <AuthContext.Provider value={{ authData, loading, signIn, signOut, signUp }}>
             {children}
         </AuthContext.Provider>
     );
