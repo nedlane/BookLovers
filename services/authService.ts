@@ -42,7 +42,6 @@ export const authService = {
             .then(response => response.json())
             .then(data => {
                 // Handle the response data from the PHP server
-                console.log(data);
                 return data;
             })
             .catch(error => {

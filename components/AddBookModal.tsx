@@ -17,7 +17,6 @@ export function BookModal() {
     useEffect(() => {
         async function getClubs() {
             const submit = { userid: authData.userid, token: authData.token };
-            console.log(submit);
             await fetch(global.SERVERPATH + '/mobile/myclubs.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -30,7 +29,6 @@ export function BookModal() {
                     let clubs = data.clubs.map((club) => {
                         return { label: club.clubname, value: club.clubid };
                     });
-                    console.log(clubs)
                     setItems(clubs);
                 })
                 .catch(error => {

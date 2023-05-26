@@ -39,7 +39,6 @@ export default function Login() {
 
     async function handleSubmit(values, actions) {
         const submit: { email: string, password: string, fname: string, sname: string, pcode: string } = { email: values.username.toLowerCase(), password: values.password, fname: values.fname, sname: values.sname, pcode: values.pcode };
-        console.log(submit)
         await signUp(submit);
 
         actions.resetForm();
