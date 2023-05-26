@@ -6,15 +6,15 @@ import { Formik, FormikHelpers } from 'formik';
 import '@expo/match-media';
 import { useMediaQuery } from 'react-responsive';
 import { useAuth } from '../../contexts/authContext';
+import { useRouter } from 'expo-router';
 
 export default function Login() {
+  const router = useRouter();
+
 
   const [loading, isLoading] = useState(false);
   const auth = useAuth();
-  const signIn = async (submit: { email: string, password: string }) => {
-    isLoading(true);
-    await auth.signIn(submit.email, submit.password);
-  };
+  const { authData } = useAuth();
 
   const handleMediaQueryChange = (matches: boolean) => {
     if (matches) {
@@ -30,49 +30,23 @@ export default function Login() {
     handleMediaQueryChange
   );
 
-  async function handleSubmit(values: { username: string, password: string }, actions: FormikHelpers<{ username: string, password: string }>) {
-    const submit: { email: string, password: string } = { email: values.username.toLowerCase(), password: values.password };
 
-    await signIn(submit);
-
-    actions.resetForm();
-    actions.setSubmitting(false);
-
-  }
 
   const logOut = () => {
     isLoading(true);
     auth.signOut();
+    router.push('/(auth)');
   }
 
 
   return (
     <View style={[globalStyles.container]}>
-      <Formik
-        initialValues={{ username: '', password: '' }}
-        onSubmit={(values, actions) => {
-          if (values.username === "" || values.password === "") return;
-          handleSubmit(values, actions)
-        }}
-      >
-        {props => (
-          <>
-            <View style={styles.flexLR}>
-              <Text>Username:</Text>
-              <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="e.g. s3119091" autoCorrect={false} onChangeText={props.handleChange('username')} value={props.values.username} />
-            </View>
-            <View style={styles.flexLR}>
-              <Text>Password:</Text>
-              <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="********" autoCorrect={false} secureTextEntry={true} onChangeText={props.handleChange('password')} value={props.values.password} />
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <Button color='maroon' title="Submit" onPress={props.handleSubmit as any} />
-              <Button color='maroon' title="Reset" onPress={logOut as any} />
-            </View>
+      <Text style={globalStyles.titleText}>Welcome {authData?.firstname}</Text>
 
-          </>
-        )}
-      </Formik>
+      <View style={styles.flexLR}>
+        <Button color='maroon' title="Log Out" onPress={logOut as any} />
+      </View>
+
     </View>
   );
 }

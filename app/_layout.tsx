@@ -7,8 +7,10 @@ import { useColorScheme } from 'react-native';
 import { AuthProvider, useAuth } from '../contexts/authContext';
 import { useRouter } from 'expo-router';
 
-global.SERVERPATH = 'http://localhost/ia3';
-global.USER = {};
+
+let IP = 'localhost';
+//IP = '192.168.20.53';
+global.SERVERPATH = `http://${IP}/ia3`;
 
 
 

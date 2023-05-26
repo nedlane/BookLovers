@@ -6,6 +6,8 @@ import { Card } from '../../components/Card';
 import { ReviewDetails } from '../../components/ReviewDetails';
 import { globalStyles } from '../../constants/styles';
 import { v4 as uuid } from 'uuid';
+import { KeyboardDismiss } from '../../components/KeyboardDismiss';
+import { useAuth } from '../../contexts/authContext';
 
 export default function ReviewPage() {
     const [reviews, setReviews] = useState([
@@ -49,40 +51,34 @@ export default function ReviewPage() {
 
 
     return (
-        <Pressable style={globalStyles.flex_1} onPressOut={() => {
-            Keyboard.dismiss();
-        }}>
-            <View style={globalStyles.flex_1} >
-                <KeyboardAvoidingView style={globalStyles.container}>
-                    <FlatList style={globalStyles.flex_1} data={reviews} renderItem={({ item, index }) => (
-                        <TouchableOpacity onPress={() => {
-                            openModal(index);
-                        }}>
-                            <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={modalStates[index]}
-                                onRequestClose={() => {
-                                    closeModal(index);
-                                }}
-                            >
-                                <View style={{ flex: 1 }}>
-                                    <ReviewDetails review={item} closeModal={() => { closeModal(index); }} index={index} />
-                                </View>
-                            </Modal>
-                            <Card>
-                                <Text style={globalStyles.title}>{item.title}</Text>
-                            </Card>
-                        </TouchableOpacity>
-                    )} />
-                    <Pressable style={globalStyles.flex_1} onPressOut={(e) => { e.stopPropagation(); }}>
-                        <ScrollView>
-                            <ReviewForm addReview={addReview} />
-                        </ScrollView>
-                    </Pressable>
-                </KeyboardAvoidingView>
-            </View>
-        </Pressable>
+        <KeyboardDismiss>
+            <FlatList style={globalStyles.flex_1} data={reviews} renderItem={({ item, index }) => (
+                <TouchableOpacity onPress={() => {
+                    openModal(index);
+                }}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalStates[index]}
+                        onRequestClose={() => {
+                            closeModal(index);
+                        }}
+                    >
+                        <View style={{ flex: 1 }}>
+                            <ReviewDetails review={item} closeModal={() => { closeModal(index); }} index={index} />
+                        </View>
+                    </Modal>
+                    <Card>
+                        <Text style={globalStyles.title}>{item.title}</Text>
+                    </Card>
+                </TouchableOpacity>
+            )} />
+            <Pressable style={globalStyles.flex_1} onPressOut={(e) => { e.stopPropagation(); }}>
+                <ScrollView>
+                    <ReviewForm addReview={addReview} />
+                </ScrollView>
+            </Pressable>
+        </KeyboardDismiss>
     );
 
 }

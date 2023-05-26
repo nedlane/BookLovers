@@ -1,4 +1,4 @@
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons/';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons/';
 import { Link, Tabs } from 'expo-router';
 import { Pressable, useColorScheme } from 'react-native';
 import Colors from '../../constants/Colors';
@@ -24,7 +24,15 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Login',
-          tabBarIcon: ({ color }) => <FontAwesome {...TabBarIconProps} name="user-circle" color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome5 {...TabBarIconProps} name="key" color={color} />,
+
+        }}
+      />
+      <Tabs.Screen
+        name="register"
+        options={{
+          title: 'Register',
+          tabBarIcon: ({ color }) => <FontAwesome {...TabBarIconProps} name="user-plus" color={color} />,
 
         }}
       />

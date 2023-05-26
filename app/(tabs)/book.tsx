@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TextInput, View, Text } from '../../components/Themed';
 import { globalStyles } from '../../constants/styles';
-import { FlatList } from 'react-native';
+import { FlatList, Keyboard } from 'react-native';
 import { Card } from '../../components/Card';
 import { v4 } from 'uuid';
 import { BookImage } from '../../components/BookImage';
+import { KeyboardDismiss } from '../../components/KeyboardDismiss';
 
 
 export default function FindBook() {
@@ -138,7 +139,7 @@ export default function FindBook() {
     };
 
     return (
-        <View style={globalStyles.container}>
+        <>
             <TextInput
                 style={globalStyles.input}
                 placeholder="Book Title"
@@ -155,6 +156,6 @@ export default function FindBook() {
                     onEndReached={fetchMoreBooks}
                 />
             </View>
-        </View>
+        </>
     );
 }

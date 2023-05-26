@@ -3,16 +3,11 @@ import { View } from '../../components/Themed';
 import { Event } from '../../components/CalendarEvent';
 import { Agenda } from 'react-native-calendars';
 import { useRouter } from "expo-router";
-import { getUser, userType } from './index';
-
+import { useAuth } from '../../contexts/authContext';
 
 
 export default function Events() {
-    if ((!global.USER || !global.USER.username)) {
-        getUser().then((user) => {
-            global.USER = user;
-        });
-    }
+    const { authData } = useAuth();
 
     const router = useRouter();
 
@@ -20,21 +15,16 @@ export default function Events() {
     const [loadedMonths, setLoadedMonths] = useState<string[]>([]);
 
     useEffect(() => {
-        if (!global.USER.username || !global.USER.userid) {
-            // alert("You are not logged in");
-            router.push("/");
-        };
         // Load initial events when the component mounts
         setLoadedMonths([]);
         loadItemsForMonth({ month: new Date().getMonth() - 1, year: new Date().getFullYear() });
         loadItemsForMonth({ month: new Date().getMonth(), year: new Date().getFullYear() });
         loadItemsForMonth({ month: new Date().getMonth() + 1, year: new Date().getFullYear() });
 
-    }, [global.USER]);
+    }, [authData]);
 
 
     const loadItemsForMonth = async (DateData: { year: number, month: number, day?: number, timestamp?: number, dateString?: string }) => {
-        if (!(global.USER || global.USER.userid)) return;
         const { month, year } = DateData;
         if (!month) return;
         if (!year) return;
@@ -67,7 +57,7 @@ export default function Events() {
 
     const fetchEventsFromDataSource = async ({ month, year }: { month: number, year: number }) => {
 
-        var submit = { month: month, year: year, uid: global.USER.userid };
+        var submit = { month: month, year: year, uid: authData.userid, token: authData.token };
 
         var newevents = await fetch(global.SERVERPATH + '/mobile/listevents.php', {
             method: 'POST',

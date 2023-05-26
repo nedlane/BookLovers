@@ -2,6 +2,8 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons/';
 import { Link, Tabs } from 'expo-router';
 import { Pressable, useColorScheme } from 'react-native';
 import Colors from '../../constants/Colors';
+import { useAuth } from '../../contexts/authContext';
+
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -14,7 +16,8 @@ const TabBarIconProps = {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
+  const { authData } = useAuth();
+  if (!authData) return;
   return (
     <Tabs
       screenOptions={{
@@ -23,7 +26,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Login',
+          title: 'My Account',
           tabBarIcon: ({ color }) => <FontAwesome {...TabBarIconProps} name="user-circle" color={color} />,
 
         }}

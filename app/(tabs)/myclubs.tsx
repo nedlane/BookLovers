@@ -3,23 +3,18 @@ import { FlatList } from 'react-native';
 import { View } from '../../components/Themed';
 import { Club } from '../../components/Club';
 import { globalStyles } from '../../constants/styles';
-import { getUser, userType } from './index';
-
+import { useAuth } from '../../contexts/authContext';
 
 export default function MyClubs() {
     const [clubs, setClubs] = useState([] as any);
 
+    const { authData } = useAuth();
     useEffect(() => {
-        async function fetchData() {
-            const user = await getUser();
-            const clubsData = await getClubs(user);
-            setClubs(clubsData);
-        }
-        fetchData();
-    }, []);
+        getClubs(authData).then((clubs) => { setClubs(clubs) });
+    }, [authData]);
 
-    async function getClubs(user: userType) {
-        if (!user.username) return [];
+    async function getClubs(user: any) {
+        if (!user.userid) return [];
         return [
             { key: 1, name: 'Club 1', description: 'This is a club', location: 'This is a location #1' },
             { key: 2, name: 'Club 2', description: 'This is a club but 2', location: 'This is a location' },
