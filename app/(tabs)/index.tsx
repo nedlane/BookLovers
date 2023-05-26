@@ -1,27 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Button } from 'react-native';
 import { Text, View, TextInput } from '../../components/Themed';
 import { globalStyles } from '../../constants/styles';
 import { Formik, FormikHelpers } from 'formik';
 import '@expo/match-media';
 import { useMediaQuery } from 'react-responsive';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { sha256 } from 'react-native-sha256';
-
-export async function getUser() {
-  const user = await AsyncStorage.getItem('BookLovers.user');
-  global.USER = JSON.parse(user || '{}');
-  return global.USER;
-}
-
-export type userType = {
-  username: string,
-  password: string,
-};
+import { useAuth } from '../../contexts/authContext';
 
 export default function Login() {
 
-  var user = getUser();
+  const [loading, isLoading] = useState(false);
+  const auth = useAuth();
+  const signIn = async (submit: { email: string, password: string }) => {
+    isLoading(true);
+    await auth.signIn(submit.email, submit.password);
+  };
 
   const handleMediaQueryChange = (matches: boolean) => {
     if (matches) {
@@ -38,44 +31,20 @@ export default function Login() {
   );
 
   async function handleSubmit(values: { username: string, password: string }, actions: FormikHelpers<{ username: string, password: string }>) {
-    var submit: { email: string, password: string } = { email: values.username.toLowerCase(), password: values.password };
+    const submit: { email: string, password: string } = { email: values.username.toLowerCase(), password: values.password };
 
-    var newuser = await fetch(global.SERVERPATH + '/mobile/mobilelogin.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: Object.keys(submit)
-        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent((submit as any)[key]))
-        .join('&'),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Handle the response data from the PHP server
-        return data;
-      })
-      .catch(error => {
-        // Handle any errors that occurred during the request
-        console.error(error);
-      });
+    await signIn(submit);
 
-    if (newuser.result === "Success") {
-
-      await AsyncStorage.setItem('BookLovers.user', JSON.stringify(newuser));
-      global.USER = newuser;
-
-      actions.resetForm();
-      user = getUser();
-
-    } else {
-      alert("Invalid username or password");
-    }
+    actions.resetForm();
     actions.setSubmitting(false);
 
   }
 
-  async function logOut() {
-    await AsyncStorage.removeItem('BookLovers.user');
-    user = getUser();
+  const logOut = () => {
+    isLoading(true);
+    auth.signOut();
   }
+
 
   return (
     <View style={[globalStyles.container]}>

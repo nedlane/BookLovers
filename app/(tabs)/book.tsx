@@ -60,8 +60,7 @@ export default function FindBook() {
 
                 var data = await response.json();
 
-                console.log(page * 25);
-                console.log(data.totalItems);
+
                 if (data.totalItems === 0) {
                     const book = {
                         uuid: "2",

@@ -4,10 +4,13 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
-
+import { AuthProvider, useAuth } from '../contexts/authContext';
+import { useRouter } from 'expo-router';
 
 global.SERVERPATH = 'http://localhost/ia3';
 global.USER = {};
+
+
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -30,25 +33,33 @@ export default function RootLayout() {
     if (error) throw error;
   }, [error]);
 
+
   return (
-    <>
-      {/* Keep the splash screen open until the assets have loaded. In the future, we should just support async font loading with a native version of font-display. */}
+    <AuthProvider>
       {!loaded && <SplashScreen />}
       {loaded && <RootLayoutNav />}
-    </>
+    </AuthProvider>
+
   );
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const { authData, loading } = useAuth();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push((!!authData) ? '(tabs)' : '(auth)');
+  }, [authData]);
+
+  if (loading) return <SplashScreen />;
 
   return (
-    <>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-      </ThemeProvider>
-    </>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Stack>
+        {(!!authData) ? (<Stack.Screen name="(tabs)" options={{ headerShown: false }} />) : (<Stack.Screen name="(auth)" options={{ headerShown: false }} />)}
+      </Stack>
+    </ThemeProvider>
   );
 }
