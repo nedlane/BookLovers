@@ -1,13 +1,15 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { View, Text } from './Themed';
 import { Card } from './Card';
 
 export function Event(props: any) {
     return (
-        <Card style={props.style}>
-            <Text>{props.event.time.substring(0, props.event.time.length - 3)} - {props.event.location}</Text>
-        </Card>
+        <TouchableOpacity style={{ alignSelf: "center", width: "90%", maxWidth: "400px" }}>
+            <Card style={props.style}>
+                <Text>{props.event.time.substring(0, props.event.time.length - 3)} - {props.event.location}</Text>
+            </Card>
+        </TouchableOpacity>
 
     );
 }

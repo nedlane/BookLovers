@@ -6,7 +6,6 @@ import '@expo/match-media';
 import { useMediaQuery } from 'react-responsive';
 import { useAuth } from '../../contexts/authContext';
 import { useRouter } from 'expo-router';
-import { BookModal } from '../../components/AddBookModal';
 
 export default function Login() {
   const router = useRouter();

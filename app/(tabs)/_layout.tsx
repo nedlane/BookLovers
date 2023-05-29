@@ -53,7 +53,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="book"
+        name="books"
         options={{
           title: 'Get Books',
           tabBarIcon: ({ color }) => <FontAwesome {...TabBarIconProps} name="book" color={color} />

@@ -1,78 +1,54 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { View, TextInput } from './Themed';
+import { Pressable, StyleSheet, Text, TouchableOpacity, } from 'react-native';
+import { View } from './Themed';
 import { globalStyles } from '../constants/styles';
-import { Formik } from 'formik';
 import { useAuth } from '../contexts/authContext';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { postRequest } from '../services/postRequest';
 
-export function BookModal() {
+export function ClubModal(props: any) {
+
+    let item = props.item
 
     const { authData } = useAuth();
 
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
+    const [value, setValue] = useState('');
     const [items, setItems] = useState([]);
 
     useEffect(() => {
         async function getClubs() {
             const submit = { userid: authData.userid, token: authData.token };
-            await fetch(global.SERVERPATH + '/mobile/myclubs.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: Object.keys(submit)
-                    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent((submit as any)[key]))
-                    .join('&'),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    let clubs = data.clubs.map((club) => {
-                        return { label: club.clubname, value: club.clubid };
-                    });
-                    setItems(clubs);
-                })
-                .catch(error => {
-                    // Handle any errors that occurred during the request
-                    console.error(error);
-                });
-
+            const data = await postRequest('/mobile/myclubs.php', submit)
+            let clubs = data.clubs.map((club) => {
+                return { label: club.clubname, value: club.clubid };
+            });
+            setItems(clubs);
         }
         getClubs();
     }, [authData]);
 
-
-
-
-
-
-
+    const handleSubmit = async (clubid: string) => {
+        if (await postRequest('/mobile/addbook.php', { userid: authData.userid, token: authData.token, clubid: clubid, bid: item.id })) props.close();
+        return;
+    }
 
     return (
-        <Formik
-            initialValues={{ clubid: '' }}
-            onSubmit={(values, actions) => {
-                return;
-            }}
-        >
-            {props => (
-                <View>
-                    <DropDownPicker
-                        open={open}
-                        value={value}
-                        items={items}
-                        setOpen={setOpen}
-                        setValue={setValue}
-                        setItems={setItems}
-                    />
-
-
-
-                    <TouchableOpacity onPressOut={() => { props.handleSubmit(); }}>
-                        <Text style={styles.button}>Add Book</Text>
-                    </TouchableOpacity>
-                </View>
-            )}
-        </Formik>
+        <Pressable style={globalStyles.fill} onPress={(e) => { props.close(); e.stopPropagation }}>
+            <View style={globalStyles.container}>
+                <DropDownPicker
+                    open={open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                />
+                <TouchableOpacity onPressOut={() => { handleSubmit(value); }}>
+                    <Text style={styles.button}>Add Book</Text>
+                </TouchableOpacity>
+            </View>
+        </Pressable>
     );
 }
 

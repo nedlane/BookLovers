@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, TouchableOpacity, Modal, StyleSheet, Pressable, Keyboard, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { FlatList, TouchableOpacity, Modal, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { View, Text } from '../../components/Themed';
 import { ReviewForm } from '../../components/ReviewForm';
 import { Card } from '../../components/Card';

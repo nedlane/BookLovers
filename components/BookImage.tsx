@@ -17,15 +17,16 @@ export const BookImage: React.FC<BookImageProps> = ({
     const handleImageOnLoad = () => setIsLoaded(true);
     const styles = {
         wrapper: {
+            ...globalStyles.flex_1,
             aspectRatio: 1 / 1.5,
             height: undefined,
             margin: '1%',
-            ...globalStyles.flex_1,
         },
         generalImage: {
             position: 'absolute',
+            aspectRatio: 1 / 1.5,
+            height: undefined,
             width: '100%',
-            height: '100%',
             resizeMode: 'cover',
             transitionProperty: 'opacity',
             transitionDuration: '500ms',

@@ -4,6 +4,7 @@ import { Event } from '../../components/CalendarEvent';
 import { Agenda } from 'react-native-calendars';
 import { useRouter } from "expo-router";
 import { useAuth } from '../../contexts/authContext';
+import { postRequest } from '../../services/postRequest';
 
 
 export default function Events() {
@@ -57,31 +58,16 @@ export default function Events() {
 
     const fetchEventsFromDataSource = async ({ month, year }: { month: number, year: number }) => {
 
-        var submit = { month: month, year: year, uid: authData.userid, token: authData.token };
+        const submit = { month: month, year: year, uid: authData.userid, token: authData.token };
 
-        var newevents = await fetch(global.SERVERPATH + '/mobile/listevents.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: Object.keys(submit)
-                .map(key => encodeURIComponent(key) + '=' + encodeURIComponent((submit as any)[key]))
-                .join('&'),
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response data from the PHP server
-                return data;
-            })
-            .catch(error => {
-                // Handle any errors that occurred during the request
-                console.error(error);
-            });
+        let newevents = await postRequest('/mobile/listevents.php', submit);
 
         newevents = newevents.events
 
-        var events = newevents.map((event: any) => {
-            var meetingdatetime = event.meetingtime.split(" ");
-            var meetingdate = meetingdatetime[0];
-            var meetingtime = meetingdatetime[1];
+        const events = newevents.map((event: any) => {
+            const meetingdatetime = event.meetingtime.split(" ");
+            const meetingdate = meetingdatetime[0];
+            const meetingtime = meetingdatetime[1];
             return { date: meetingdate, time: meetingtime, location: event.meetinglocation }
         })
 

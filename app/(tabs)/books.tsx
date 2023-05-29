@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { TextInput, View, Text } from '../../components/Themed';
 import { globalStyles } from '../../constants/styles';
 import { FlatList, Keyboard } from 'react-native';
-import { Card } from '../../components/Card';
 import { v4 } from 'uuid';
-import { BookImage } from '../../components/BookImage';
+import { renderBook } from '../../components/Book';
 import { KeyboardDismiss } from '../../components/KeyboardDismiss';
+import { postRequest } from '../../services/postRequest';
 
 
 export default function FindBook() {
@@ -17,7 +17,7 @@ export default function FindBook() {
     const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
-        clearTimeout(searchTimeoutRef.current);
+        clearTimeout(searchTimeoutRef.current as any);
 
         if (search.trim() !== '') {
             fetchBooks(page);
@@ -26,7 +26,7 @@ export default function FindBook() {
         }
 
         return () => {
-            clearTimeout(searchTimeoutRef.current);
+            clearTimeout(searchTimeoutRef.current as any);
         };
     }, [search]);
 
@@ -43,28 +43,18 @@ export default function FindBook() {
                 uuid: "1",
                 volumeInfo: { title: "Loading..." }
             }
-            setBooks([book]);
+            setBooks([book] as any);
         }
         searchTimeoutRef.current = setTimeout(async () => {
             try {
-                const response = await fetch(global.SERVERPATH + '/mobile/findbook.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: Object.keys(submit)
-                        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent((submit as any)[key]))
-                        .join('&'),
-                });
 
-                if (!response.ok) {
-                    throw new Error('Request failed with status ' + response.status);
-                }
+                let data = await postRequest('/mobile/findbook.php', submit);
 
-                var data = await response.json();
-
+                if (data.items === undefined) return;
 
                 if (data.totalItems === 0) {
                     const book = {
-                        uuid: "2",
+                        uuid: "1",
                         volumeInfo: { title: "No Results" }
                     }
                     setBooks([book]);
@@ -92,7 +82,7 @@ export default function FindBook() {
             } catch (error) {
                 console.error(error);
                 const book = {
-                    uuid: "3",
+                    uuid: "1",
                     volumeInfo: { title: "Error" }
                 }
                 setBooks([book]);
@@ -106,51 +96,40 @@ export default function FindBook() {
         fetchBooks(nextPage);
     };
 
+    const [modalStates, setModalStates]: [modalStates: Array<boolean>, setModalStates: Function] = useState([]);
 
-    const renderBook = ({ item }: { item: any }) => {
-        let bookCover: JSX.Element | null = null;
-        if (item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail) {
-            bookCover = (
-                <BookImage
-                    lowResSrc={{ uri: item.volumeInfo.imageLinks.smallThumbnail }}
-                    highResSrc={{ uri: `https://books.google.com/books/publisher/content/images/frontcover/${item.id}?fife=w800-h1200&source=gbs_api` }}
 
-                />
-            );
-        } else {
-            bookCover = (
-                <BookImage
-                    lowResSrc={{ uri: "https://books.google.com/books/publisher/content/images/frontcover/1?fife=w800-h1200&source=gbs_api" }}
-                    highResSrc={{ uri: "" }}
-                />
-            );
-        }
+    function openModal(index: number) {
+        const newModalStates = [...modalStates];
+        newModalStates[index] = true;
+        setModalStates(newModalStates);
+    }
 
-        return (
-            <Card innerStyle={{ flexDirection: "row" }}>
-                <View style={[{ flexDirection: "column" }, globalStyles.flex_1]}>
-                    <Text style={{ fontWeight: "bold" }}>{item.volumeInfo.title}</Text>
-                    <Text style={{ fontStyle: "italic" }}>{item.volumeInfo.subtitle}</Text>
-                    <Text style={{ fontWeight: "bold" }}>{item.volumeInfo.authors}</Text>
-                </View>
-                {bookCover}
-            </Card>
-        );
-    };
+    function closeModal(index: number) {
+        const newModalStates = [...modalStates];
+        newModalStates[index] = false;
+        setModalStates(newModalStates);
+    }
+
+    useEffect(() => {
+        setModalStates(books.map(() => false));
+    }, [books]);
 
     return (
         <>
-            <TextInput
-                style={globalStyles.input}
-                placeholder="Book Title"
-                onChangeText={handleChange}
-                value={search}
-            />
+            <View>
+                <TextInput
+                    style={globalStyles.input}
+                    placeholder="Book Title"
+                    onChangeText={handleChange}
+                    value={search}
+                />
+            </View>
             <View style={globalStyles.flex_1}>
                 <FlatList
                     data={books}
-                    style={{ flex: 1 }}
-                    renderItem={renderBook}
+                    style={globalStyles.flex_1}
+                    renderItem={({ item, index }) => renderBook({ item, open: modalStates[index], openModal: () => { openModal(index) }, closeModal: () => { closeModal(index) } })}
                     keyExtractor={(item: any) => (item.uuid)}
                     onEndReachedThreshold={2}
                     onEndReached={fetchMoreBooks}
@@ -159,3 +138,4 @@ export default function FindBook() {
         </>
     );
 }
+
