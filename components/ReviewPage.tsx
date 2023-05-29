@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, TouchableOpacity, Modal, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { StyleSheet, Pressable, ScrollView } from 'react-native';
 import { View, Text } from './Themed';
 import { ReviewForm } from './ReviewForm';
 import { Card } from './Card';
-import { ReviewDetails } from './ReviewDetails';
 import { globalStyles } from '../constants/styles';
-import { v4 as uuid } from 'uuid';
 import { KeyboardDismiss } from './KeyboardDismiss';
 import { useAuth } from '../contexts/authContext';
 import { postRequest } from '../services/postRequest';
 import { v4 } from 'uuid';
-import { set } from 'react-hook-form';
+import { ReviewList } from './ReviewList'
 
 export function ReviewPage({ close, meetingid }: any) {
     const [reviews, setReviews] = useState([] as { bid: string; title: string; rating: string; body: string; key: string; }[]);
@@ -72,27 +70,7 @@ export function ReviewPage({ close, meetingid }: any) {
     return (
         <KeyboardDismiss>
             <Pressable style={styles.modalClose} onPress={(e) => { close(); e.stopPropagation }}><Text style={styles.x}>x</Text></Pressable>
-            {reviews.length > 0 && <FlatList style={globalStyles.flex_1} data={reviews} renderItem={({ item, index }) => (
-                <TouchableOpacity onPress={() => {
-                    openModal(index);
-                }}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalStates[index]}
-                        onRequestClose={() => {
-                            closeModal(index);
-                        }}
-                    >
-                        <View style={{ flex: 1 }}>
-                            <ReviewDetails review={item} closeModal={() => { closeModal(index); }} index={index} />
-                        </View>
-                    </Modal>
-                    <Card>
-                        <Text style={globalStyles.title}>{item.title}</Text>
-                    </Card>
-                </TouchableOpacity>
-            )} />}
+            {reviews.length > 0 && ReviewList(reviews, openModal, modalStates, closeModal)}
             {reviews.length === 0 && <View style={globalStyles.flex_1}>
                 <Card>
                     <Text style={globalStyles.title}>No Reviews</Text>
@@ -121,3 +99,5 @@ const styles = StyleSheet.create({
         color: "red",
     }
 });
+
+
