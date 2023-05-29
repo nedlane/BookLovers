@@ -57,6 +57,7 @@ export default function Events() {
 
 
     const fetchEventsFromDataSource = async ({ month, year }: { month: number, year: number }) => {
+        if (authData == null) return;
 
         const submit = { month: month, year: year, uid: authData.userid, token: authData.token };
 
@@ -68,7 +69,8 @@ export default function Events() {
             const meetingdatetime = event.meetingtime.split(" ");
             const meetingdate = meetingdatetime[0];
             const meetingtime = meetingdatetime[1];
-            return { date: meetingdate, time: meetingtime, location: event.meetinglocation }
+            const meetingid = event.meetingid;
+            return { date: meetingdate, time: meetingtime, location: event.meetinglocation, meetingid: meetingid }
         })
 
         return events;
@@ -76,9 +78,9 @@ export default function Events() {
 
     };
 
-    const formatEvents = ({ events, month, year }: { events: { time: string; date: string; location: string; }[], month: number, year: number }) => {
+    const formatEvents = ({ events, month, year }: { events: { time: string; date: string; location: string; meetingid: string }[], month: number, year: number }) => {
         const formattedEvents: {
-            [date: string]: { time: string; date: string; location: string }[];
+            [date: string]: { time: string; date: string; location: string; meetingid: string; }[];
         } = {};
 
         const daysInMonth = new Date(year, month, 0).getDate(); // Get the number of days in the month

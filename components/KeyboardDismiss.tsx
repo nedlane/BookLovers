@@ -3,7 +3,7 @@ import { Keyboard, KeyboardAvoidingView, Pressable } from "react-native";
 import { View } from "./Themed";
 import { globalStyles } from "../constants/styles";
 
-export function KeyboardDismiss({ children }) {
+export function KeyboardDismiss({ children }: any) {
     return (
         <Pressable style={globalStyles.flex_1} onPressOut={() => {
             Keyboard.dismiss();

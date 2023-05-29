@@ -57,7 +57,7 @@ export default function FindBook() {
                         uuid: "1",
                         volumeInfo: { title: "No Results" }
                     }
-                    setBooks([book]);
+                    setBooks([book] as any);
                     return;
                 }
                 if (data.totalItems < ((page - 1) * 25)) {
@@ -73,7 +73,7 @@ export default function FindBook() {
                     setBooks(data);
                     return;
                 } else {
-                    setBooks((prevBooks) => [...prevBooks, ...data]);
+                    setBooks((prevBooks) => [...prevBooks, ...data] as any);
                     return;
                 }
 
@@ -85,7 +85,7 @@ export default function FindBook() {
                     uuid: "1",
                     volumeInfo: { title: "Error" }
                 }
-                setBooks([book]);
+                setBooks([book] as any);
             }
         }, 500);
     };

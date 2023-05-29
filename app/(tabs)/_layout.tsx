@@ -39,13 +39,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="reviews"
-        options={{
-          title: 'Reviews',
-          tabBarIcon: ({ color }) => <FontAwesome {...TabBarIconProps} name="comments-o" color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="events"
         options={{
           title: 'My Events',
@@ -59,7 +52,8 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <FontAwesome {...TabBarIconProps} name="book" color={color} />
         }}
       />
-    </Tabs>
+    </Tabs >
+
 
   );
 }

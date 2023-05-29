@@ -1,4 +1,3 @@
-// create authService with .login and .logout methods in react native
 import { postRequest } from "./postRequest";
 export const authService = {
     signIn: async (email: string, password: string) => {
@@ -8,5 +7,8 @@ export const authService = {
     },
     signUp: async (submit: { email: string, password: string, fname: string, sname: string, pcode: string }) => {
         return await postRequest('/mobile/mobileregister.php', submit);
+    },
+    signOut: async (token: string, userid: string) => {
+        return await postRequest('/mobile/mobilelogout.php', { token, userid });
     }
 };

@@ -18,7 +18,7 @@ export default function Login() {
 
     const [loading, isLoading] = useState(false);
     const auth = useAuth();
-    const signUp = async (submit) => {
+    const signUp = async (submit: any) => {
         isLoading(true);
         await auth.signUp(submit);
     };
@@ -37,7 +37,7 @@ export default function Login() {
         handleMediaQueryChange
     );
 
-    async function handleSubmit(values, actions) {
+    async function handleSubmit(values: any, actions: any) {
         const submit: { email: string, password: string, fname: string, sname: string, pcode: string } = { email: values.username.toLowerCase(), password: values.password, fname: values.fname, sname: values.sname, pcode: values.pcode };
         await signUp(submit);
 

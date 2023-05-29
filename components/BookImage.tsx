@@ -40,14 +40,14 @@ export const BookImage: React.FC<BookImageProps> = ({
             transitionTimingFunction: 'ease-in',
         } as StyleProp<ImageStyle>,
     };
-    if (!highResSrc || highResSrc === '') {
+    if (!highResSrc || highResSrc as string === '') {
         return (
             <View style={styles.wrapper}>
                 <Image source={lowResSrc} style={[styles.lowResImage, styles.generalImage]} />
             </View>
         );
     }
-    if (!lowResSrc || lowResSrc === '') {
+    if (!lowResSrc || lowResSrc as string === '') {
         return (
             <View style={styles.wrapper}>
                 <Image source={highResSrc} style={[styles.highResImage, styles.generalImage]} />

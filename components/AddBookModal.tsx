@@ -18,9 +18,10 @@ export function ClubModal(props: any) {
 
     useEffect(() => {
         async function getClubs() {
+            if (!authData) return;
             const submit = { userid: authData.userid, token: authData.token };
             const data = await postRequest('/mobile/myclubs.php', submit)
-            let clubs = data.clubs.map((club) => {
+            let clubs = data.clubs.map((club: any) => {
                 return { label: club.clubname, value: club.clubid };
             });
             setItems(clubs);
@@ -29,6 +30,7 @@ export function ClubModal(props: any) {
     }, [authData]);
 
     const handleSubmit = async (clubid: string) => {
+        if (!authData) return;
         if (await postRequest('/mobile/addbook.php', { userid: authData.userid, token: authData.token, clubid: clubid, bid: item.id })) props.close();
         return;
     }
@@ -42,7 +44,7 @@ export function ClubModal(props: any) {
                     items={items}
                     setOpen={setOpen}
                     setValue={setValue}
-                    setItems={setItems}
+                    setItems={setItems as any}
                 />
                 <TouchableOpacity onPressOut={() => { handleSubmit(value); }}>
                     <Text style={styles.button}>Add Book</Text>

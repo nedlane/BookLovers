@@ -8,21 +8,13 @@ export function ReviewForm({ addReview }: { addReview: Function }) {
 
     return (
         <Formik
-            initialValues={{ title: '', body: '', rating: '', bid: '' }}
+            initialValues={{ title: '', body: '', rating: '' }}
             onSubmit={(values, actions) => {
                 if (addReview(values)) { actions.resetForm() };
             }}
         >
             {props => (
                 <View>
-                    <TextInput
-                        style={globalStyles.input}
-                        placeholder='Book ID'
-                        onChangeText={props.handleChange('bid')}
-                        value={props.values.bid}
-                        keyboardType='numeric'
-                    />
-
                     <TextInput
                         style={globalStyles.input}
                         placeholder='Review title'
