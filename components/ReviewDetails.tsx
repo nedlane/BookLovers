@@ -15,14 +15,13 @@ export function ReviewDetails({ review, closeModal, index }: { review: { bid: st
             <View style={globalStyles.container}>
                 <Card style={styles.card} innerStyle={styles.innerCard}>
                     <FontAwesome name="close" size={24} color={useThemeColor({}, 'text')} style={{ position: 'absolute', top: -10, right: -10 }} />
-                    <Text style={globalStyles.title}>Book: {review.bid}</Text>
                     <Text style={globalStyles.title}>
                         {review.title}
                     </Text>
                     <Text>{review.body}</Text>
                     <View>
                         <Text>Rating: </Text>
-                        <Rating rating={parseInt(review.rating)} />
+                        <Rating rating={parseFloat(review.rating)} />
                     </View>
                 </Card>
             </View>

@@ -1,4 +1,4 @@
-import { FlatList, Modal, TouchableOpacity } from "react-native/types";
+import { FlatList, Modal, TouchableOpacity } from "react-native";
 import { Text, View } from "./Themed";
 import { ReviewDetails } from "./ReviewDetails";
 import { Card } from "./Card";

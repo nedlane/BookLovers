@@ -10,7 +10,11 @@ export function ReviewForm({ addReview }: { addReview: Function }) {
         <Formik
             initialValues={{ title: '', body: '', rating: '' }}
             onSubmit={(values, actions) => {
-                if (addReview(values)) { actions.resetForm() };
+                addReview(values).then((result) => {
+                    if (result) {
+                        actions.resetForm();
+                    }
+                });
             }}
         >
             {props => (

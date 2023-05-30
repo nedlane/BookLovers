@@ -9,26 +9,28 @@ import { useAuth } from '../contexts/authContext';
 import { postRequest } from '../services/postRequest';
 import { v4 } from 'uuid';
 import { ReviewList } from './ReviewList'
+import { set } from 'react-hook-form';
+import { Rating } from './ratings';
+import { parse } from 'expo-linking';
 
 export function ReviewPage({ close, meetingid }: any) {
     const [reviews, setReviews] = useState([] as { bid: string; title: string; rating: string; body: string; key: string; }[]);
+    const [avgRating, setAvgRating] = useState(0);
 
     const { authData } = useAuth();
 
-    const addReview = async (review: { title: string, rating: string, body: string, key?: string }) => {
-        if (!authData) { alert("Invalid Creds."); return; }
-        if (review.title === "") { alert("Please Enter a Review Title"); return; }
-        if (review.body === "") { alert("Please Enter a Review"); return; }
-        if (review.rating === "") { alert("Please Enter a Rating"); return; }
-        if (isNaN(parseInt(review.rating))) { alert("Rating must be a number"); return; }
-        if (parseInt(review.rating) > 5 || parseInt(review.rating) < 0) { alert("Rating must be between 0 and 5"); return; }
-        review.key = v4();
-        review.rating = parseInt(review.rating).toString();
+    const addReview = async (review: { title: string, rating: string, body: string }) => {
+        if (!authData) { alert("Invalid Creds."); return false; }
+        if (review.title === "") { alert("Please Enter a Review Title"); return false; }
+        if (review.body === "") { alert("Please Enter a Review"); return false; }
+        if (review.rating === "") { alert("Please Enter a Rating"); return false; }
+        if (isNaN(parseFloat(review.rating))) { alert("Rating must be a number"); return false; }
+        if (parseFloat(review.rating) > 5 || parseFloat(review.rating) < 1) { alert("Rating must be between 1 and 5"); return false; }
+        // if (parseFloat(review.rating) % 0.5 !== 0) { alert("Rating must be a multiple of 0.5"); return false; }
+        review.rating = parseFloat(review.rating).toString();
 
         if (await postRequest("/mobile/addreview.php", { meetingid: meetingid, title: review.title, rating: review.rating, body: review.body, token: authData.token, userid: authData.userid })) {
-            setReviews((currentReviews: any) => {
-                return [review, ...currentReviews];
-            });
+            await fetchReviews(meetingid);
             return true;
         };
         return false;
@@ -59,6 +61,7 @@ export function ReviewPage({ close, meetingid }: any) {
             return { uid: review.userid, title: review.title, rating: review.rating, body: review.body, key: v4() };
         });
         setReviews(reviews);
+        setAvgRating(fetchedReviews.average);
         return (reviews);
     }
 
@@ -77,6 +80,7 @@ export function ReviewPage({ close, meetingid }: any) {
                 </Card>
             </View>}
             <Pressable style={globalStyles.flex_1} onPressOut={(e) => { e.stopPropagation(); }}>
+                {reviews.length > 0 && <Text style={{ alignSelf: "center" }}>Average: <Rating rating={avgRating} /></Text>}
                 <ScrollView>
                     <ReviewForm addReview={addReview} />
                 </ScrollView>
