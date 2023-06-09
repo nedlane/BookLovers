@@ -1,6 +1,21 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextStyle } from 'react-native';
 
-export const globalStyles = StyleSheet.create({
+const inputColor = "#78081e";
+
+const input = {
+    width: "100%",
+    backgroundColor: inputColor,
+    borderRadius: 25,
+    height: 50,
+    margin: 10,
+    justifyContent: "center",
+    padding: 20,
+    fontSize: 18,
+    color: "white",
+    alignSelf: "center",
+} as TextStyle;
+
+const globalStyles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
@@ -15,14 +30,6 @@ export const globalStyles = StyleSheet.create({
         marginVertical: 30,
         height: 1,
         width: '80%',
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#777',
-        margin: 10,
-        padding: 10,
-        fontSize: 18,
-        borderRadius: 6,
     },
     flex_1: {
         flex: 1,
@@ -46,5 +53,14 @@ export const globalStyles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    input: input,
+    inputMultiLine: {}
 });
 
+globalStyles.inputMultiLine = {
+    ...input,
+    height: input.height as number * 3,
+};
+
+
+export default globalStyles;

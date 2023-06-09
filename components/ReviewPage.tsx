@@ -1,32 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, Pressable, ScrollView } from 'react-native';
 import { View, Text } from './Themed';
 import { ReviewForm } from './ReviewForm';
 import { Card } from './Card';
-import { globalStyles } from '../constants/styles';
+import globalStyles from '../constants/styles';
 import { KeyboardDismiss } from './KeyboardDismiss';
 import { useAuth } from '../contexts/authContext';
-import { postRequest } from '../services/postRequest';
+import { postRequest } from '../services/requests';
 import { v4 } from 'uuid';
 import { ReviewList } from './ReviewList'
-import { set } from 'react-hook-form';
 import { Rating } from './ratings';
-import { parse } from 'expo-linking';
+
+export type ReviewType = { bid: string; title: string; rating: string; body: string; name: string; key?: string; };
 
 export function ReviewPage({ close, meetingid }: any) {
-    const [reviews, setReviews] = useState([] as { bid: string; title: string; rating: string; body: string; key: string; }[]);
+    const [reviews, setReviews] = useState([] as ReviewType[]);
     const [avgRating, setAvgRating] = useState(0);
 
     const { authData } = useAuth();
 
     const addReview = async (review: { title: string, rating: string, body: string }) => {
-        if (!authData) { alert("Invalid Creds."); return false; }
+        if (!authData) { alert("Invalid Credentials"); return false; }
         if (review.title === "") { alert("Please Enter a Review Title"); return false; }
         if (review.body === "") { alert("Please Enter a Review"); return false; }
         if (review.rating === "") { alert("Please Enter a Rating"); return false; }
         if (isNaN(parseFloat(review.rating))) { alert("Rating must be a number"); return false; }
         if (parseFloat(review.rating) > 5 || parseFloat(review.rating) < 1) { alert("Rating must be between 1 and 5"); return false; }
-        // if (parseFloat(review.rating) % 0.5 !== 0) { alert("Rating must be a multiple of 0.5"); return false; }
+        if (parseFloat(review.rating) % 0.5 !== 0) { alert("Rating must be a multiple of 0.5"); return false; }
         review.rating = parseFloat(review.rating).toString();
 
         if (await postRequest("/mobile/addreview.php", { meetingid: meetingid, title: review.title, rating: review.rating, body: review.body, token: authData.token, userid: authData.userid })) {
@@ -58,7 +58,7 @@ export function ReviewPage({ close, meetingid }: any) {
         const fetchedReviews = await postRequest("/mobile/getreviews.php", { meetingid: meetingid, token: authData.token, userid: authData.userid });
         if (!fetchedReviews.reviews) return;
         let reviews = fetchedReviews.reviews.map((review: any) => {
-            return { uid: review.userid, title: review.title, rating: review.rating, body: review.body, key: v4() };
+            return { name: review.name, title: review.title, rating: review.rating, body: review.body, key: v4() };
         });
         setReviews(reviews);
         setAvgRating(fetchedReviews.average);
@@ -67,7 +67,6 @@ export function ReviewPage({ close, meetingid }: any) {
 
 
     useEffect(() => { fetchReviews(meetingid) }, [authData, meetingid]);
-
 
 
     return (
@@ -79,8 +78,8 @@ export function ReviewPage({ close, meetingid }: any) {
                     <Text style={globalStyles.title}>No Reviews</Text>
                 </Card>
             </View>}
-            <Pressable style={globalStyles.flex_1} onPressOut={(e) => { e.stopPropagation(); }}>
-                {reviews.length > 0 && <Text style={{ alignSelf: "center" }}>Average: <Rating rating={avgRating} /></Text>}
+            <Pressable onPressOut={(e) => { e.stopPropagation(); }}>
+                {reviews.length > 0 && <Text style={{ alignSelf: "center" }}>Average: <Rating rating={avgRating} /> ({reviews.length})</Text>}
                 <ScrollView>
                     <ReviewForm addReview={addReview} />
                 </ScrollView>

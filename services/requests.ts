@@ -18,11 +18,12 @@ export const postRequest = async (url: string, submit: any) => {
         });
     //auto abort if run multiple times in succession
     controller.abort();
-
+    if (!data) {
+        alert("SERVER CONNECTION ERROR");
+        return false
+    }
     if (data.result === "Success") {
         return data;
-
-
     } else if (data.result === "Error") {
         alert(data.message);
         return false

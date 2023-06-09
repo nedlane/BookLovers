@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Button } from 'react-native';
 import { Text, View, TextInput } from '../../components/Themed';
-import { globalStyles } from '../../constants/styles';
+import globalStyles from '../../constants/styles'
 import '@expo/match-media';
 import { useMediaQuery } from 'react-responsive';
 import { useAuth } from '../../contexts/authContext';

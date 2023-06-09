@@ -1,4 +1,4 @@
-import { postRequest } from "./postRequest";
+import { postRequest } from "./requests";
 export const authService = {
     signIn: async (email: string, password: string) => {
         const submit: { email: string, password: string } = { email: email.toLowerCase(), password: password };

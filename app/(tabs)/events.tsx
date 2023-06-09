@@ -4,7 +4,7 @@ import { Event } from '../../components/CalendarEvent';
 import { Agenda } from 'react-native-calendars';
 import { useRouter } from "expo-router";
 import { useAuth } from '../../contexts/authContext';
-import { postRequest } from '../../services/postRequest';
+import { postRequest } from '../../services/requests';
 
 
 export default function Events() {
@@ -70,7 +70,8 @@ export default function Events() {
             const meetingdate = meetingdatetime[0];
             const meetingtime = meetingdatetime[1];
             const meetingid = event.meetingid;
-            return { date: meetingdate, time: meetingtime, location: event.meetinglocation, meetingid: meetingid }
+            const book = event.book;
+            return { date: meetingdate, time: meetingtime, location: event.meetinglocation, meetingid: meetingid, book: book }
         })
 
         return events;

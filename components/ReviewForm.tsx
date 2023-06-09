@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { View, TextInput } from './Themed';
-import { globalStyles } from '../constants/styles';
+import globalStyles from '../constants/styles';
 import { Formik } from 'formik';
 
 export function ReviewForm({ addReview }: { addReview: Function }) {
@@ -10,7 +10,7 @@ export function ReviewForm({ addReview }: { addReview: Function }) {
         <Formik
             initialValues={{ title: '', body: '', rating: '' }}
             onSubmit={(values, actions) => {
-                addReview(values).then((result) => {
+                addReview(values).then((result: any) => {
                     if (result) {
                         actions.resetForm();
                     }
@@ -27,7 +27,7 @@ export function ReviewForm({ addReview }: { addReview: Function }) {
                     />
 
                     <TextInput
-                        style={globalStyles.input}
+                        style={globalStyles.inputMultiLine}
                         multiline
                         placeholder='Review body'
                         onChangeText={props.handleChange('body')}

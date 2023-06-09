@@ -32,9 +32,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="myclubs"
+        name="voting"
         options={{
-          title: 'My Clubs',
+          title: 'Book Voting',
           tabBarIcon: ({ color }) => <FontAwesome {...TabBarIconProps} name="wpexplorer" color={color} />,
         }}
       />

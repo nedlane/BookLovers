@@ -54,6 +54,7 @@ function RootLayoutNav() {
 
   useEffect(() => {
     router.push((!!authData) ? '(tabs)' : '(auth)');
+
   }, [authData]);
 
   if (loading) return <SplashScreen />;

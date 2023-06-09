@@ -1,15 +1,15 @@
 import React from 'react';
 import { StyleSheet, Pressable, Image } from 'react-native';
 import { View, Text } from './Themed';
-import { globalStyles } from '../constants/styles';
+import globalStyles from '../constants/styles';
 import { Rating } from './ratings';
 import { Card } from './Card';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useThemeColor } from './Themed';
+import { ReviewType } from './ReviewPage';
 
 
-export function ReviewDetails({ review, closeModal, index }: { review: { bid: string, title: string, rating: string, body: string, key: string }, closeModal: VoidFunction, index: number }) {
-
+export function ReviewDetails({ review, closeModal, index }: { review: ReviewType, closeModal: VoidFunction, index: number }) {
     return (
         <Pressable onPress={(e) => { closeModal(); e.stopPropagation(); }} style={globalStyles.fill}>
             <View style={globalStyles.container}>
@@ -22,6 +22,9 @@ export function ReviewDetails({ review, closeModal, index }: { review: { bid: st
                     <View>
                         <Text>Rating: </Text>
                         <Rating rating={parseFloat(review.rating)} />
+                    </View>
+                    <View>
+                        <Text>By: {review.name}</Text>
                     </View>
                 </Card>
             </View>

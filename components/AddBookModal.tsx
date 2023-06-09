@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, TouchableOpacity, } from 'react-native';
-import { View } from './Themed';
-import { globalStyles } from '../constants/styles';
+import React from 'react';
+import { Pressable } from 'react-native';
+import globalStyles from '../constants/styles';
 import { useAuth } from '../contexts/authContext';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { postRequest } from '../services/postRequest';
+import { postRequest } from '../services/requests';
+import { ClubsDropdown } from './ClubsDropdown';
+import { Text, View } from './Themed';
+import { getBookCover } from './Book';
+import { Card } from './Card';
 
 export function ClubModal(props: any) {
 
@@ -12,57 +14,28 @@ export function ClubModal(props: any) {
 
     const { authData } = useAuth();
 
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('');
-    const [items, setItems] = useState([]);
-
-    useEffect(() => {
-        async function getClubs() {
-            if (!authData) return;
-            const submit = { userid: authData.userid, token: authData.token };
-            const data = await postRequest('/mobile/myclubs.php', submit)
-            let clubs = data.clubs.map((club: any) => {
-                return { label: club.clubname, value: club.clubid };
-            });
-            setItems(clubs);
-        }
-        getClubs();
-    }, [authData]);
 
     const handleSubmit = async (clubid: string) => {
         if (!authData) return;
-        if (await postRequest('/mobile/addbook.php', { userid: authData.userid, token: authData.token, clubid: clubid, bid: item.id })) props.close();
+        if (await postRequest('/mobile/vote.php', { userid: authData.userid, token: authData.token, clubid: clubid, bid: item.id })) props.close();
         return;
     }
 
+    let bookCover: JSX.Element | null = getBookCover(item);
+
     return (
-        <Pressable style={globalStyles.fill} onPress={(e) => { props.close(); e.stopPropagation }}>
-            <View style={globalStyles.container}>
-                <DropDownPicker
-                    open={open}
-                    value={value}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems as any}
-                />
-                <TouchableOpacity onPressOut={() => { handleSubmit(value); }}>
-                    <Text style={styles.button}>Add Book</Text>
-                </TouchableOpacity>
-            </View>
-        </Pressable>
+        <View style={[globalStyles.container]}>
+            <Pressable onPress={(e) => { props.close(); e.stopPropagation }} style={[globalStyles.fill, { justifyContent: "center" }]}>
+                <Card innerStyle={{ flexDirection: "row", alignSelf: "center" }}>
+                    {bookCover}
+                    <View style={[{ flexDirection: "column" }, globalStyles.flex_1]} >
+                        <Text style={{ fontWeight: "bold" }}>{item.volumeInfo.title}</Text>
+                        <Text style={{ fontStyle: "italic" }}>{item.volumeInfo.subtitle}</Text>
+                        <Text style={{ fontWeight: "bold" }}>{item.volumeInfo.authors}</Text>
+                    </View>
+                </Card>
+                {ClubsDropdown(handleSubmit, authData, "Add Book")}
+            </Pressable>
+        </View>
     );
 }
-
-const styles = StyleSheet.create({
-    button: {
-        margin: 10,
-        padding: 10,
-        fontSize: 18,
-        borderRadius: 6,
-        borderWidth: 1,
-        borderColor: 'maroon',
-        backgroundColor: 'maroon',
-        color: 'white',
-    },
-});

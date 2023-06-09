@@ -71,7 +71,9 @@ const AuthProvider: React.FC = ({ children }: any) => {
         //Remove data from context, so the App can be notified
         //and send the user to the AuthStack
         if (!authData) return;
-        await authService.signOut(authData.token, authData.userid);
+        const success = await authService.signOut(authData.token, authData.userid);
+
+        if (!success) return;
 
         setAuthData(undefined);
 

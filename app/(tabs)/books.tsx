@@ -1,16 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TextInput, View, Text } from '../../components/Themed';
-import { globalStyles } from '../../constants/styles';
+import globalStyles from '../../constants/styles'
 import { FlatList, Keyboard } from 'react-native';
 import { v4 } from 'uuid';
-import { renderBook } from '../../components/Book';
-import { KeyboardDismiss } from '../../components/KeyboardDismiss';
-import { postRequest } from '../../services/postRequest';
+import { renderBook, BookType } from '../../components/Book';
+import { postRequest } from '../../services/requests';
 
 
 export default function FindBook() {
     const [search, setSearch] = useState('');
-    const [books, setBooks] = useState([]);
+    const [books, setBooks] = useState([] as BookType[]);
     const [page, setPage] = useState(1);
 
 
@@ -130,7 +129,7 @@ export default function FindBook() {
                     data={books}
                     style={globalStyles.flex_1}
                     renderItem={({ item, index }) => renderBook({ item, open: modalStates[index], openModal: () => { openModal(index) }, closeModal: () => { closeModal(index) } })}
-                    keyExtractor={(item: any) => (item.uuid)}
+                    keyExtractor={(item) => (item.uuid || item.id)}
                     onEndReachedThreshold={2}
                     onEndReached={fetchMoreBooks}
                 />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Image, ImageSourcePropType, ImageStyle, StyleProp } from 'react-native';
-import { globalStyles } from '../constants/styles';
+import globalStyles from '../constants/styles';
 
 interface BookImageProps {
     lowResSrc: ImageSourcePropType;

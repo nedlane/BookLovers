@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Button } from 'react-native';
 import { Text, View, TextInput } from '../../components/Themed';
-import { globalStyles } from '../../constants/styles';
+import globalStyles from '../../constants/styles'
 import { Formik, FormikHelpers } from 'formik';
 import '@expo/match-media';
 import { useMediaQuery } from 'react-responsive';
