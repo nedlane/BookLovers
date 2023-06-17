@@ -8,8 +8,8 @@ export default function NotFoundScreen() {
     <>
       <Stack.Screen options={{ title: 'Oops!' }} />
       <View style={styles.container}>
-        <Text style={styles.title}>This screen doesn't exist.</Text>
-
+        <Text style={styles.title}>This page doesn't exist!</Text>
+        <Text style={styles.subTitle}>If you are sure this page exists, please contact an administrator.</Text>
         <Link href="/" style={styles.link}>
           <Text style={styles.linkText}>Go to home screen!</Text>
         </Link>
@@ -24,6 +24,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+  },
+  subTitle: {
+    fontSize: 16,
+    fontStyle: 'italic',
   },
   title: {
     fontSize: 20,

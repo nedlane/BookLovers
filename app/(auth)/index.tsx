@@ -55,12 +55,12 @@ export default function Login() {
                 {props => (
                     <>
                         <View style={styles.flexLR}>
-                            <Text>Email:</Text>
-                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="e.g. s3119091" autoComplete="email" onChangeText={props.handleChange('username')} value={props.values.username} autoCapitalize='none' />
+                            {/* <Text>Email:</Text> */}
+                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="Email: steve@jobs.com" autoComplete="email" onChangeText={props.handleChange('username')} value={props.values.username} autoCapitalize='none' />
                         </View>
                         <View style={styles.flexLR}>
-                            <Text>Password:</Text>
-                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="********" autoCorrect={false} secureTextEntry={true} onChangeText={props.handleChange('password')} value={props.values.password} autoCapitalize='none' />
+                            {/* <Text>Password:</Text> */}
+                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="Password: ********" autoCorrect={false} secureTextEntry={true} onChangeText={props.handleChange('password')} value={props.values.password} autoCapitalize='none' />
                         </View>
                         <Button color='maroon' title="Log In" onPress={props.handleSubmit as any} />
                     </>

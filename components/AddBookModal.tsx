@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/authContext';
 import { postRequest } from '../services/requests';
 import { ClubsDropdown } from './ClubsDropdown';
 import { Text, View } from './Themed';
-import { getBookCover } from './Book';
+import { bookInner, getBookCover } from './Book';
 import { Card } from './Card';
 
 export function ClubModal(props: any) {
@@ -26,13 +26,8 @@ export function ClubModal(props: any) {
     return (
         <View style={[globalStyles.container]}>
             <Pressable onPress={(e) => { props.close(); e.stopPropagation }} style={[globalStyles.fill, { justifyContent: "center" }]}>
-                <Card innerStyle={{ flexDirection: "row", alignSelf: "center" }}>
-                    {bookCover}
-                    <View style={[{ flexDirection: "column" }, globalStyles.flex_1]} >
-                        <Text style={{ fontWeight: "bold" }}>{item.volumeInfo.title}</Text>
-                        <Text style={{ fontStyle: "italic" }}>{item.volumeInfo.subtitle}</Text>
-                        <Text style={{ fontWeight: "bold" }}>{item.volumeInfo.authors}</Text>
-                    </View>
+                <Card>
+                    {bookInner(item, true, { flexDirection: "row" })}
                 </Card>
                 {ClubsDropdown(handleSubmit, authData, "Add Book")}
             </Pressable>

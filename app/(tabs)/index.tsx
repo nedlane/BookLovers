@@ -1,65 +1,48 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, Button } from 'react-native';
-import { Text, View, TextInput } from '../../components/Themed';
+import { Text, View } from '../../components/Themed';
 import globalStyles from '../../constants/styles'
-import '@expo/match-media';
-import { useMediaQuery } from 'react-responsive';
 import { useAuth } from '../../contexts/authContext';
 import { useRouter } from 'expo-router';
-
-export default function Login() {
-  const router = useRouter();
+import DropDownPicker from 'react-native-dropdown-picker';
 
 
-  const [loading, isLoading] = useState(false);
-  const auth = useAuth();
-  const { authData } = useAuth();
+export default function HomePage() {
+    const router = useRouter();
 
-  const handleMediaQueryChange = (matches: boolean) => {
-    if (matches) {
-      styles.formwidth.width = '90%';
-    } else {
-      styles.formwidth.width = '50%';
+
+    const auth = useAuth();
+    const { authData } = useAuth();
+
+
+    const logOut = () => {
+        auth.signOut();
+        router.push('/(auth)');
     }
-  }
 
-  const SmallScreen: boolean = useMediaQuery(
-    { maxWidth: 728 },
-    undefined,
-    handleMediaQueryChange
-  );
-
-
-
-  const logOut = () => {
-    isLoading(true);
-    auth.signOut();
-    router.push('/(auth)');
-  }
-
-
-  return (
-    <View style={[globalStyles.container]}>
-      <Text style={globalStyles.title}>Welcome {authData?.firstname}</Text>
-
-      <View style={styles.flexLR}>
-        <Button color='maroon' title="Log Out" onPress={logOut as any} />
-      </View>
-
-    </View>
-  );
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState('');
+    const [items, setItems] = useState([] as any);
+    useMemo(() => {
+            const options = ['Calendar View', 'List View'];
+            setItems(options.map((item: string, index: number) => ({ label: item, value: index })));
+            }, [authData]);
+    return (
+            <View style={[globalStyles.container]}>
+            <Text style={globalStyles.title}>Welcome {authData?.firstname}</Text>
+            <View style={styles.flexLR}>
+            <Button color='maroon' title="Log Out" onPress={logOut as any} />
+            </View>
+            <DropDownPicker open={open} value={value} items={items} setOpen={setOpen} setValue={setValue} setItems={setItems as any} />
+            </View>
+           );
 }
 
-
-
 const styles = StyleSheet.create({
-  formwidth: {
-    width: '100%'
-  },
-  flexLR: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+flexLR: {
+flexDirection: 'row',
+justifyContent: 'center',
+alignItems: 'center',
+},
 });
 

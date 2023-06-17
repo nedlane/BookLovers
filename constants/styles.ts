@@ -1,6 +1,6 @@
 import { StyleSheet, TextStyle } from 'react-native';
 
-const inputColor = "#78081e";
+const inputColor = "#868788";
 
 const input = {
     width: "100%",

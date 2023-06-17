@@ -6,7 +6,7 @@ import globalStyles from "../constants/styles";
 import { ReviewType } from "./ReviewPage";
 
 export function ReviewList(reviews: ReviewType[], openModal: (index: number) => void, modalStates: boolean[], closeModal: (index: number) => void) {
-    return <FlatList style={globalStyles.flex_1} data={reviews} renderItem={({ item, index }) => (
+    return <FlatList style={[globalStyles.flex_1, { overflow: "scroll" }]} data={reviews} renderItem={({ item, index }) => (
         <TouchableOpacity onPress={() => {
             openModal(index);
         }}>

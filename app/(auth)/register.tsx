@@ -61,30 +61,30 @@ export default function Login() {
                 {props => (
                     <>
                         <View style={styles.flexLR}>
-                            <Text>Email:</Text>
-                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="e.g. s3119091" autoCorrect={false} onChangeText={props.handleChange('username')} value={props.values.username} />
+                            {/* <Text>Email:</Text> */}
+                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="Email: steve@jobs.com" autoCorrect={false} onChangeText={props.handleChange('username')} value={props.values.username} />
                         </View>
                         <View style={styles.flexLR}>
-                            <Text>First Name:</Text>
-                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="Brad" onChangeText={props.handleChange('fname')} value={props.values.fname} />
+                            {/* <Text>First Name:</Text> */}
+                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="First Name: Brad" onChangeText={props.handleChange('fname')} value={props.values.fname} />
                         </View>
                         <View style={styles.flexLR}>
-                            <Text>Surname:</Text>
-                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="Nielsen" onChangeText={props.handleChange('sname')} value={props.values.sname} />
+                            {/* <Text>Surname:</Text> */}
+                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="Surname: Nielsen" onChangeText={props.handleChange('sname')} value={props.values.sname} />
                         </View>
                         <View style={styles.flexLR}>
-                            <Text>Post Code:</Text>
-                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="4000" onChangeText={props.handleChange('pcode')} value={props.values.pcode} keyboardType='numeric' />
+                            {/* <Text>Post Code:</Text> */}
+                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="Postcode: 4000" onChangeText={props.handleChange('pcode')} value={props.values.pcode} keyboardType='numeric' />
                         </View>
                         <View style={styles.flexLR}>
-                            <Text>Password:</Text>
-                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="********" autoCorrect={false} secureTextEntry={true} onChangeText={props.handleChange('password')} value={props.values.password} />
+                            {/* <Text>Password:</Text> */}
+                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="Password: ********" autoCorrect={false} secureTextEntry={true} onChangeText={props.handleChange('password')} value={props.values.password} />
                         </View>
                         <View style={styles.flexLR}>
-                            <Text>Retype Password:</Text>
-                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="********" autoCorrect={false} secureTextEntry={true} onChangeText={props.handleChange('passwordconf')} value={props.values.passwordconf} />
+                            {/* <Text>Retype Password:</Text> */}
+                            <TextInput style={[globalStyles.input, styles.formwidth, globalStyles.flex_1]} placeholder="Retype password:" autoCorrect={false} secureTextEntry={true} onChangeText={props.handleChange('passwordconf')} value={props.values.passwordconf} />
                         </View>
-                        <Button color='maroon' title="Log In" onPress={props.handleSubmit as any} />
+                        <Button color='maroon' title="Register" onPress={props.handleSubmit as any} />
                     </>
                 )}
             </Formik>

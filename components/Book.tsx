@@ -12,7 +12,7 @@ export type BookType = {
     volumeInfo: {
         title: string,
         subtitle: string,
-        authors: string,
+        authors: string[],
         imageLinks: {
             smallThumbnail: string,
             thumbnail: string
@@ -28,13 +28,16 @@ export const bookInner = (item: BookType, inner = true, style: StyleProp<ViewSty
         style = { alignSelf: "center", width: "90%", maxWidth: "400px", flexDirection: "row" };
     }
 
+    if (!item.volumeInfo.authors) item.volumeInfo.authors = ["Unknown Author"];
+    if (typeof item.volumeInfo.authors === "string") item.volumeInfo.authors = [item.volumeInfo.authors];
+
     return (
         <View style={style}>
             {bookCover}
             < View style={[{ flexDirection: "column" }, globalStyles.flex_1]} >
                 <Text style={{ fontWeight: "bold" }}>{item.volumeInfo.title}</Text>
-                <Text style={{ fontStyle: "italic" }}>{item.volumeInfo.subtitle}</Text>
-                <Text style={{ fontWeight: "bold" }}>{item.volumeInfo.authors}</Text>
+                <Text>{item.volumeInfo.subtitle}</Text>
+                <Text style={{ fontStyle: "italic" }}>{item.volumeInfo.authors.join(', ')}</Text>
             </View >
         </View>
     );
