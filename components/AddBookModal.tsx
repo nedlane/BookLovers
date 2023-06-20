@@ -4,8 +4,8 @@ import globalStyles from '../constants/styles';
 import { useAuth } from '../contexts/authContext';
 import { postRequest } from '../services/requests';
 import { ClubsDropdown } from './ClubsDropdown';
-import { Text, View } from './Themed';
-import { bookInner, getBookCover } from './Book';
+import { View } from './Themed';
+import { bookInner} from './Book';
 import { Card } from './Card';
 
 export function ClubModal(props: any) {
@@ -21,7 +21,6 @@ export function ClubModal(props: any) {
         return;
     }
 
-    let bookCover: JSX.Element | null = getBookCover(item);
 
     return (
         <View style={[globalStyles.container]}>

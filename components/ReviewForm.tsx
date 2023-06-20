@@ -18,7 +18,7 @@ export function ReviewForm({ addReview }: { addReview: Function }) {
             }}
         >
             {props => (
-                <View>
+                <View style={{ padding: 2 }}>
                     <TextInput
                         style={globalStyles.input}
                         placeholder='Review title'

@@ -49,12 +49,12 @@ function renderBook({ item, club, auth, setBook, index }: any) {
             <View style={{ flexDirection: "row", justifyContent: "space-around", paddingTop: 10 }}>
                 <TouchableOpacity onPress={clickUp}>
                     {(item.myvote === 1) && <MaterialIcons name="thumb-up" size={24} color="blue" />}
-                    {(item.myvote !== 1) && <MaterialIcons name="thumb-up" size={24} color="black" />}
+                    {(item.myvote !== 1) && <MaterialIcons name="thumb-up" size={24} color="gray" />}
                 </TouchableOpacity>
                 <Text>{item.vote}</Text>
                 <TouchableOpacity onPress={clickDown}>
                     {(item.myvote === -1) && <MaterialIcons name="thumb-down" size={24} color="blue" />}
-                    {(item.myvote !== -1) && <MaterialIcons name="thumb-down" size={24} color="black" />}
+                    {(item.myvote !== -1) && <MaterialIcons name="thumb-down" size={24} color="gray" />}
                 </TouchableOpacity>
             </View>
         </Card >
@@ -128,8 +128,9 @@ export default function VotePage() {
                     setValue={setValue}
                     setItems={setItems as any} />
             }
+            {renderBook({ item: { volumeInfo: { title: "Add New Book" } }, open: false, openmodal: () => { }, closeModal: () => { } })}
             <FlatList
-                data={bookList}
+            data={bookList}
                 renderItem={({ item, index }) => renderBook({ item: item, club: value, auth: authData, setBook: setVote, index: index })}
                 keyExtractor={(item) => (item.id)}
                 style={[globalStyles.fill, { marginTop: 10 }]}

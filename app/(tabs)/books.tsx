@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { TextInput, View, Text } from '../../components/Themed';
+import { View, TextInput } from '../../components/Themed';
 import globalStyles from '../../constants/styles'
-import { FlatList, Keyboard } from 'react-native';
+import { FlatList } from 'react-native';
 import { v4 } from 'uuid';
 import { renderBook, BookType } from '../../components/Book';
 import { postRequest } from '../../services/requests';

@@ -2,11 +2,7 @@
   "name": "booklovers",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "test": "jest --watchAll"
+    "start": "./startServer.sh"
   },
   "jest": {
     "preset": "jest-expo"

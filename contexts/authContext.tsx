@@ -6,9 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 type AuthContextData = {
     authData?: AuthData;
     loading: boolean;
-    signIn(email: string, password: string): Promise<void>;
+    signIn(email: string, password: string): Promise<boolean>;
     signOut(): Promise<void>;
-    signUp(submit: { email: string; password: string; fname: string; sname: string; pcode: string; }): Promise<void>;
+    signUp(submit: { email: string; password: string; fname: string; sname: string; pcode: string; }): Promise<boolean>;
 };
 
 type AuthData = {
@@ -52,19 +52,21 @@ const AuthProvider: React.FC = ({ children }: any) => {
 
         const _authData = await authService.signIn(email, password);
 
-        if (_authData === false) return;
+        if (_authData === false) return false;
 
         //Set the data in the context, so the App can be notified
         //and send the user to the AuthStack
         setAuthData(_authData);
 
         AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
+
+        return true;
     };
 
     const signUp = async (submit: { email: string, password: string, fname: string, sname: string, pcode: string }) => {
         await authService.signUp(submit);
 
-        signIn(submit.email, submit.password);
+        return(signIn(submit.email, submit.password));
     };
 
     const signOut = async () => {
