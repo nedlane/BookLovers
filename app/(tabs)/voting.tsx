@@ -128,7 +128,7 @@ export default function VotePage() {
                     setValue={setValue}
                     setItems={setItems as any} />
             }
-            {renderBook({ item: { volumeInfo: { title: "Add New Book" } }, open: false, openmodal: () => { }, closeModal: () => { } })}
+            {/* {renderBook({ item: { volumeInfo: { title: "Add New Book" } }, open: false, openmodal: () => { }, closeModal: () => { } })} */}
             <FlatList
             data={bookList}
                 renderItem={({ item, index }) => renderBook({ item: item, club: value, auth: authData, setBook: setVote, index: index })}

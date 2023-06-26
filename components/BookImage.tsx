@@ -4,7 +4,7 @@ import globalStyles from '../constants/styles';
 
 interface BookImageProps {
     lowResSrc: ImageSourcePropType;
-    highResSrc: ImageSourcePropType;
+    highResSrc: ImageSourcePropType | undefined;
 }
 
 export const BookImage: React.FC<BookImageProps> = ({
@@ -28,26 +28,25 @@ export const BookImage: React.FC<BookImageProps> = ({
             height: undefined,
             width: '100%',
             resizeMode: 'cover',
-            transitionProperty: 'opacity',
-            transitionDuration: '500ms',
+            // transitionProperty: 'opacity',
+            // transitionDuration: '500ms',
+            // transitionTimingFunction: 'ease-in'
         } as StyleProp<ImageStyle>,
         lowResImage: {
             opacity: isLoaded ? 0 : 1,
-            transitionTimingFunction: 'ease-in',
         } as StyleProp<ImageStyle>,
         highResImage: {
             opacity: isLoaded ? 1 : 0,
-            transitionTimingFunction: 'ease-in',
         } as StyleProp<ImageStyle>,
     };
-    if (!highResSrc || highResSrc as string === '') {
+    if (!highResSrc || highResSrc as string == '') {
         return (
             <View style={styles.wrapper}>
                 <Image source={lowResSrc} style={[styles.lowResImage, styles.generalImage]} />
             </View>
         );
     }
-    if (!lowResSrc || lowResSrc as string === '') {
+    if (!lowResSrc || lowResSrc as string == '') {
         return (
             <View style={styles.wrapper}>
                 <Image source={highResSrc} style={[styles.highResImage, styles.generalImage]} />

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Modal, Pressable, StyleProp, TouchableOpacity, ViewStyle } from "react-native";
+import React from "react";
+import { Modal, StyleProp, TouchableOpacity, ViewStyle } from "react-native";
 import { View, Text } from "./Themed";
 import globalStyles from "../constants/styles";
 import { Card } from "./Card";
@@ -25,7 +25,7 @@ export type BookType = {
 export const bookInner = (item: BookType, inner = true, style: StyleProp<ViewStyle> = {}) => {
     let bookCover: JSX.Element | null = getBookCover(item);
     if (!inner && Object.keys(style as Object).length === 0 && (style as Object).constructor === Object) {
-        style = { alignSelf: "center", width: "90%", maxWidth: "400px", flexDirection: "row" };
+        style = { alignSelf: "center", width: "90%", maxWidth: "300pt", flexDirection: "row" };
     }
 
     if (!item.volumeInfo.authors) item.volumeInfo.authors = ["Unknown Author"];
@@ -47,7 +47,7 @@ export const bookInner = (item: BookType, inner = true, style: StyleProp<ViewSty
 export const renderBook = ({ item, open, openModal, closeModal }: { item: BookType, open: boolean, openModal: VoidFunction, closeModal: VoidFunction }) => {
 
     return (
-        <TouchableOpacity style={{ alignSelf: "center", width: "90%", maxWidth: "400px" }} onPress={openModal}>
+        <TouchableOpacity style={{ alignSelf: "center", width: "90%", maxWidth: "300pt" }} onPress={openModal}>
             {open && item.uuid !== "1" && <Modal
                 transparent={true}
                 visible={open}

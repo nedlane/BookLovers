@@ -36,7 +36,7 @@ export function Event(props: any) {
                 </Modal>
                 <Card style={props.style}>
                     <Text>{props.event.time.substring(0, props.event.time.length - 3)} - {props.event.location}</Text>
-                    {bookInner(props.event.book, false, { alignSelf: "center", width: "90%", maxWidth: "400px", flexDirection: "row", marginTop: 20 })}
+                    {bookInner(props.event.book, false, { alignSelf: "center", width: "90%", maxWidth: "300pt", flexDirection: "row", marginTop: 20 })}
                 </Card>
             </TouchableOpacity>
         </>

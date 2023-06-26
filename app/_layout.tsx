@@ -9,7 +9,7 @@ import { AuthProvider, useAuth } from '../contexts/authContext';
 import { useRouter } from 'expo-router';
 
 
-const IP = '192.168.20.53';
+const IP = 'localhost';
 
 global.SERVERPATH = `http://${IP}/ia3`;
 
