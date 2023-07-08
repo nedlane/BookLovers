@@ -6,7 +6,7 @@ import globalStyles from "../constants/styles";
 import { ReviewType } from "./ReviewPage";
 
 export function ReviewList(reviews: ReviewType[], openModal: (index: number) => void, modalStates: boolean[], closeModal: (index: number) => void) {
-    return <FlatList style={[globalStyles.flex_1, { overflow: "scroll" }]} data={reviews} renderItem={({ item, index }) => (
+    return (<FlatList style={[globalStyles.flex_1, { overflow: "scroll"}]} data={reviews} renderItem={({ item, index }) => (
         <TouchableOpacity onPress={() => {
             openModal(index);
         }}>
@@ -18,7 +18,7 @@ export function ReviewList(reviews: ReviewType[], openModal: (index: number) => 
                     closeModal(index);
                 }}
             >
-                <View style={{ flex: 1 }}>
+                <View style={[globalStyles.flex_1]}>
                     <ReviewDetails review={item} closeModal={() => { closeModal(index); }} index={index} />
                 </View>
             </Modal>
@@ -26,5 +26,5 @@ export function ReviewList(reviews: ReviewType[], openModal: (index: number) => 
                 <Text style={globalStyles.title}>{item.title}</Text>
             </Card>
         </TouchableOpacity>
-    )} />;
+    )} />);
 }

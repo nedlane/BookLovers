@@ -118,7 +118,7 @@ export default function VotePage() {
     }
 
     return (
-        <View style={globalStyles.container}>
+        <View style={[globalStyles.container, globalStyles.flex_1]}>
             {authData &&
                 <DropDownPicker
                     open={open}
@@ -130,10 +130,10 @@ export default function VotePage() {
             }
             {/* {renderBook({ item: { volumeInfo: { title: "Add New Book" } }, open: false, openmodal: () => { }, closeModal: () => { } })} */}
             <FlatList
-            data={bookList}
+                data={bookList}
                 renderItem={({ item, index }) => renderBook({ item: item, club: value, auth: authData, setBook: setVote, index: index })}
                 keyExtractor={(item) => (item.id)}
-                style={[globalStyles.fill, { marginTop: 10 }]}
+                style={[globalStyles.fill, { marginTop: 10, width:"100%"}]}
             />
         </View>
     );

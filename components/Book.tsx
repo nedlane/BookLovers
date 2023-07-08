@@ -25,7 +25,7 @@ export type BookType = {
 export const bookInner = (item: BookType, inner = true, style: StyleProp<ViewStyle> = {}) => {
     let bookCover: JSX.Element | null = getBookCover(item);
     if (!inner && Object.keys(style as Object).length === 0 && (style as Object).constructor === Object) {
-        style = { alignSelf: "center", width: "90%", maxWidth: "300pt", flexDirection: "row" };
+        style = { alignSelf: "center", width: "90%", maxWidth: 300, flexDirection: "row" };
     }
 
     if (!item.volumeInfo.authors) item.volumeInfo.authors = ["Unknown Author"];

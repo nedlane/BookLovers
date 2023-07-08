@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, StyleSheet, TouchableOpacity } from 'react-native';
+import { Modal, TouchableOpacity } from 'react-native';
 import { View, Text } from './Themed';
 import { Card } from './Card';
 import globalStyles from '../constants/styles';
@@ -36,7 +36,7 @@ export function Event(props: any) {
                 </Modal>
                 <Card style={props.style}>
                     <Text>{props.event.time.substring(0, props.event.time.length - 3)} - {props.event.location}</Text>
-                    {bookInner(props.event.book, false, { alignSelf: "center", width: "90%", maxWidth: "300pt", flexDirection: "row", marginTop: 20 })}
+                    {bookInner(props.event.book, false, { alignSelf: "center", width: "90%", maxWidth: 300, flexDirection: "row", marginTop: 20 })}
                 </Card>
             </TouchableOpacity>
         </>

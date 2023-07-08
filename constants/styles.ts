@@ -42,7 +42,7 @@ const globalStyles = StyleSheet.create({
     },
     debug: {
         borderWidth: 10,
-        borderColor: 'black',
+        borderColor: 'blue',
         backgroundColor: 'red',
     },
     modal: {

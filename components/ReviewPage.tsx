@@ -39,7 +39,7 @@ export function ReviewPage({ close, meetingid }: any) {
 
     const [modalStates, setModalStates]: [modalStates: Array<boolean>, setModalStates: Function] = useState([]);
 
-    reviews.map((review) => modalStates.push(false));
+    reviews.map(() => modalStates.push(false));
 
     function openModal(index: number) {
         const newModalStates = [...modalStates];
@@ -68,6 +68,7 @@ export function ReviewPage({ close, meetingid }: any) {
 
     useEffect(() => { fetchReviews(meetingid) }, [authData, meetingid]);
 
+    console.log(ReviewList(reviews, openModal, modalStates, closeModal));
 
     return (
         <KeyboardDismiss>
@@ -78,7 +79,7 @@ export function ReviewPage({ close, meetingid }: any) {
                     <Text style={globalStyles.title}>No Reviews</Text>
                 </Card>
             </View>}
-            <Pressable onPressOut={(e) => { e.stopPropagation(); }}>
+            <Pressable style={[{ }, globalStyles.flex_1]} onPressOut={(e) => { e.stopPropagation(); }}>
                 {reviews.length > 0 && <Text style={{ alignSelf: "center" }}>Average: <Rating rating={avgRating} /> ({reviews.length})</Text>}
                 <ScrollView>
                     <ReviewForm addReview={addReview} />
@@ -92,8 +93,8 @@ export function ReviewPage({ close, meetingid }: any) {
 const styles = StyleSheet.create({
     modalClose: {
         position: "absolute",
-        top: "1em",
-        right: "1em",
+        top: 12,
+        right: 12,
         zIndex: 1,
     },
     x: {

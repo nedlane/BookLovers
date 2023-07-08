@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View } from '../../components/Themed';
 import { Event } from '../../components/CalendarEvent';
 import { Agenda } from 'react-native-calendars';
-import { useRouter } from "expo-router";
 import { useAuth } from '../../contexts/authContext';
 import { postRequest } from '../../services/requests';
 
 
 export default function Events() {
     const { authData } = useAuth();
-
-    const router = useRouter();
 
     const [items, setItems] = useState({});
     const [loadedMonths, setLoadedMonths] = useState<string[]>([]);
