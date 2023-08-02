@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, View } from './Themed';
+import { Text } from './Themed';
 import { Card } from './Card';
 
 type ClubType = {
@@ -27,10 +27,3 @@ export function Club({ club }: { club: ClubType }) {
     );
 };
 
-const styles = StyleSheet.create({
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: '80%',
-    },
-});

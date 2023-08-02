@@ -68,7 +68,6 @@ export function ReviewPage({ close, meetingid }: any) {
 
     useEffect(() => { fetchReviews(meetingid) }, [authData, meetingid]);
 
-    console.log(ReviewList(reviews, openModal, modalStates, closeModal));
 
     return (
         <KeyboardDismiss>

@@ -34,7 +34,7 @@ export const bookInner = (item: BookType, inner = true, style: StyleProp<ViewSty
     return (
         <View style={style}>
             {bookCover}
-            < View style={[{ flexDirection: "column" }, globalStyles.flex_1]} >
+            <View style={[{ flexDirection: "column" }, globalStyles.flex_1]} >
                 <Text style={{ fontWeight: "bold" }}>{item.volumeInfo.title}</Text>
                 <Text>{item.volumeInfo.subtitle}</Text>
                 <Text style={{ fontStyle: "italic" }}>{item.volumeInfo.authors.join(', ')}</Text>
