@@ -5,14 +5,15 @@ import globalStyles from '../../constants/styles'
 import { Formik, FormikHelpers } from 'formik';
 import '@expo/match-media';
 import { useAuth } from '../../contexts/authContext';
+import * as Crypto from 'expo-crypto';
 
 export default function Login() {
 
     const auth = useAuth();
 
     async function handleSubmit(values: { username: string, password: string }, actions: FormikHelpers<{ username: string, password: string }>) {
-
-        if (await auth.signIn(values.username, values.password)) {
+        const password = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, values.password);
+        if (await auth.signIn(values.username, password)) {
             actions.resetForm();
             actions.setSubmitting(false);
         }

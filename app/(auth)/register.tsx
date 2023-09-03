@@ -2,24 +2,19 @@ import React, { useState } from 'react';
 import { StyleSheet, Button } from 'react-native';
 import { Text, View, TextInput } from '../../components/Themed';
 import globalStyles from '../../constants/styles'
-import { Formik, FormikHelpers } from 'formik';
+import { Formik } from 'formik';
 import '@expo/match-media';
 import { useMediaQuery } from 'react-responsive';
 import { useAuth } from '../../contexts/authContext';
-
+import * as Crypto from 'expo-crypto';
 
 
 // SIGN UP IS NOT IMPLEMENTED YET
 
-
-
-
 export default function Login() {
 
-    const [loading, isLoading] = useState(false);
     const auth = useAuth();
     const signUp = async (submit: any) => {
-        isLoading(true);
         await auth.signUp(submit);
     };
 
@@ -38,7 +33,8 @@ export default function Login() {
     );
 
     async function handleSubmit(values: any, actions: any) {
-        const submit: { email: string, password: string, fname: string, sname: string, pcode: string } = { email: values.username.toLowerCase(), password: values.password, fname: values.fname, sname: values.sname, pcode: values.pcode };
+        const password = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, values.password);
+        const submit: { email: string, password: string, fname: string, sname: string, pcode: string } = { email: values.username.toLowerCase(), password: password, fname: values.fname, sname: values.sname, pcode: values.pcode };
         await signUp(submit);
 
         actions.resetForm();
