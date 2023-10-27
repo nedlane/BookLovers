@@ -12,3 +12,4 @@ export const authService = {
         return await postRequest('/mobile/mobilelogout.php', { token, userid });
     }
 };
+
